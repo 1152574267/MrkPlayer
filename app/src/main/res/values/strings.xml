@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MrkPlayer</string>
+    <string name="tab_video">视频</string>
+    <string name="tab_music">音乐</string>
+    <string name="tab_dictionary">目录</string>
+</resources>
