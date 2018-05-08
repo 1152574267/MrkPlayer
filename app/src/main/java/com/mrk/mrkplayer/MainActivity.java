@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements XRecyclerViewAdapter.OnIte
     private void initData() {
         RecyclerView tabList = (RecyclerView) findViewById(R.id.tablist);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.HORIZONTAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false);
         tabList.setLayoutManager(layoutManager);
 
         // 创建数据集
@@ -40,7 +40,7 @@ public class MainActivity extends Activity implements XRecyclerViewAdapter.OnIte
             mDataList.add(item);
         }
 
-        tabList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
+        tabList.addItemDecoration(new MyDecoration(this, MyDecoration.HORIZONTAL_LIST));
         XRecyclerViewAdapter adapter = new XRecyclerViewAdapter(this, mDataList);
         adapter.setOnItemClickListener(this);
         adapter.setOnItemLongClickListener(this);
