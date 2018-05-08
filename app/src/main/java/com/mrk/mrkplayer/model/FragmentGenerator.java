@@ -3,6 +3,8 @@ package com.mrk.mrkplayer.model;
 import android.support.v4.app.Fragment;
 
 import com.mrk.mrkplayer.R;
+import com.mrk.mrkplayer.view.DictionaryFragment;
+import com.mrk.mrkplayer.view.MusicFragment;
 import com.mrk.mrkplayer.view.VideoFragment;
 
 import java.util.ArrayList;
@@ -15,8 +17,8 @@ public class FragmentGenerator {
     public static List<Fragment> getFragmentList() {
         List<Fragment> fragmentList = new ArrayList<Fragment>();
         fragmentList.add(new VideoFragment());
-        fragmentList.add(new VideoFragment());
-        fragmentList.add(new VideoFragment());
+        fragmentList.add(new MusicFragment());
+        fragmentList.add(new DictionaryFragment());
 
         return fragmentList;
     }
