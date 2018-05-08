@@ -15,6 +15,8 @@ import java.util.List;
 
 public class XRecyclerViewAdapter extends RecyclerView.Adapter<XRecyclerViewAdapter.ViewHolder> {
     private Context mContext;
+    private OnItemClickListener mItemClickListener;
+    private OnItemLongClickListener mItemLongClickListener;
 
     private List<TabItem> mDataList;
 
@@ -37,6 +39,28 @@ public class XRecyclerViewAdapter extends RecyclerView.Adapter<XRecyclerViewAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tv.setText(mDataList.get(position).getTv());
         holder.img.setImageResource(mDataList.get(position).getIcon());
+
+        final int index = position;
+        if (mItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mItemClickListener.onItemClick(index);
+                }
+            });
+        }
+
+        if (mItemLongClickListener != null) {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    mItemLongClickListener.onItemLongClick(index);
+                    return true;
+                }
+            });
+        }
     }
 
     @Override
@@ -47,13 +71,31 @@ public class XRecyclerViewAdapter extends RecyclerView.Adapter<XRecyclerViewAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
         TextView tv;
+        View itemView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            this.itemView = itemView;
             img = (ImageView) itemView.findViewById(R.id.img);
             tv = (TextView) itemView.findViewById(R.id.tv);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener) {
+        mItemLongClickListener = itemLongClickListener;
     }
 
 }

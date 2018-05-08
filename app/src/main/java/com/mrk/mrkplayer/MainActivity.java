@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.mrk.mrkplayer.decoration.MyDecoration;
 import com.mrk.mrkplayer.adapter.XRecyclerViewAdapter;
@@ -12,7 +13,7 @@ import com.mrk.mrkplayer.bean.TabItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements XRecyclerViewAdapter.OnItemClickListener, XRecyclerViewAdapter.OnItemLongClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,19 @@ public class MainActivity extends Activity {
 
         tabList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
         XRecyclerViewAdapter adapter = new XRecyclerViewAdapter(this, mDataList);
+        adapter.setOnItemClickListener(this);
+        adapter.setOnItemLongClickListener(this);
         tabList.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(getApplicationContext(), "onItemClick: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemLongClick(int position) {
+        Toast.makeText(getApplicationContext(), "onItemLongClick: " + position, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -54,4 +67,5 @@ public class MainActivity extends Activity {
     static {
         System.loadLibrary("native-lib");
     }
+
 }
