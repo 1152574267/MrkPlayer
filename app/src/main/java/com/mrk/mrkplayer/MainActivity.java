@@ -42,13 +42,13 @@ public class MainActivity extends FragmentActivity implements
         int position = tab.getPosition();
         onTabItemSelected(position);
 
-        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
-            if (i == position) {
-                mTabLayout.getTabAt(i).setIcon(R.drawable.ic_launcher);
-            } else {
-                mTabLayout.getTabAt(i).setIcon(android.R.drawable.btn_dialog);
-            }
-        }
+//        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+//            if (i == position) {
+//                mTabLayout.getTabAt(i).setIcon(R.drawable.ic_launcher);
+//            } else {
+//                mTabLayout.getTabAt(i).setIcon(android.R.drawable.btn_dialog);
+//            }
+//        }
     }
 
     @Override
