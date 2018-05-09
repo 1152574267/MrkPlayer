@@ -13,16 +13,17 @@ import android.widget.Toast;
 
 import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.adapter.XRecyclerViewAdapter;
-import com.mrk.mrkplayer.bean.TabItem;
+import com.mrk.mrkplayer.bean.VideoItem;
 import com.mrk.mrkplayer.decoration.MyDecoration;
-import com.mrk.mrkplayer.model.FragmentGenerator;
+import com.mrk.mrkplayer.util.DbHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnItemClickListener, XRecyclerViewAdapter.OnItemLongClickListener {
     private Context mContext;
     private RecyclerView videoList;
+
+    List<VideoItem> mVideoList;
 
     @Override
     public void onAttach(Context context) {
@@ -49,15 +50,8 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 1, GridLayoutManager.VERTICAL, false);
         videoList.setLayoutManager(layoutManager);
 
-        List<TabItem> mDataList = new ArrayList<TabItem>();
-        for (int i = 0; i < 3; i++) {
-            TabItem item = new TabItem();
-            item.setTv(getResources().getString(FragmentGenerator.strArr[i]));
-            item.setIcon(FragmentGenerator.drawableArr[i]);
-            mDataList.add(item);
-        }
-
-        XRecyclerViewAdapter adapter = new XRecyclerViewAdapter(mContext, mDataList);
+        mVideoList = DbHelper.getInstance().getVideoList(mContext);
+        XRecyclerViewAdapter<VideoItem> adapter = new XRecyclerViewAdapter(mContext, mVideoList);
         adapter.setOnItemClickListener(this);
         adapter.setOnItemLongClickListener(this);
         videoList.addItemDecoration(new MyDecoration(mContext, MyDecoration.HORIZONTAL_LIST));

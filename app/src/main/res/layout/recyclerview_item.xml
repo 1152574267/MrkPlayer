@@ -18,11 +18,11 @@
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/img"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="-60dp"
+        android:singleLine="true"
         android:text="mp4"
         android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textSize="10sp" />
 
 </RelativeLayout>

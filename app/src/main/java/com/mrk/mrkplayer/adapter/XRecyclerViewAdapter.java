@@ -9,18 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mrk.mrkplayer.R;
-import com.mrk.mrkplayer.bean.TabItem;
+import com.mrk.mrkplayer.bean.VideoItem;
 
 import java.util.List;
 
-public class XRecyclerViewAdapter extends RecyclerView.Adapter<XRecyclerViewAdapter.ViewHolder> {
+public class XRecyclerViewAdapter<T> extends RecyclerView.Adapter<XRecyclerViewAdapter.ViewHolder> {
     private Context mContext;
     private OnItemClickListener mItemClickListener;
     private OnItemLongClickListener mItemLongClickListener;
 
-    private List<TabItem> mDataList;
+    private List<T> mDataList;
 
-    public XRecyclerViewAdapter(Context context, List<TabItem> dataList) {
+    public XRecyclerViewAdapter(Context context, List<T> dataList) {
         super();
 
         mContext = context;
@@ -37,8 +37,12 @@ public class XRecyclerViewAdapter extends RecyclerView.Adapter<XRecyclerViewAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tv.setText(mDataList.get(position).getTv());
-        holder.img.setImageResource(mDataList.get(position).getIcon());
+        final T object = mDataList.get(position);
+        if (object instanceof VideoItem) {
+            VideoItem item = (VideoItem) object;
+            holder.tv.setText(item.getName());
+//            holder.img.setImageResource(mDataList.get(position).getIcon());
+        }
 
         final int index = position;
         if (mItemClickListener != null) {
