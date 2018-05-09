@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.bean.VideoItem;
+import com.mrk.mrkplayer.util.DbHelper;
 
 import java.util.List;
 
@@ -40,8 +41,8 @@ public class XRecyclerViewAdapter<T> extends RecyclerView.Adapter<XRecyclerViewA
         final T object = mDataList.get(position);
         if (object instanceof VideoItem) {
             VideoItem item = (VideoItem) object;
-            holder.tv.setText(item.getName());
-//            holder.img.setImageResource(mDataList.get(position).getIcon());
+            holder.tv.setText(item.getVideoName());
+            holder.img.setImageBitmap(DbHelper.getVideoThumb(item.getVideoPath()));
         }
 
         final int index = position;

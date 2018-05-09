@@ -5,7 +5,6 @@ import android.provider.MediaStore;
 
 public class MediaDataGenerator {
     public static final Uri videoUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-    public static final Uri videoThumbUri = MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI;
 
     public static class VideoDataGenerator {
         public static final String[] videoColumns = {
@@ -19,12 +18,6 @@ public class MediaDataGenerator {
                 MediaStore.Video.Media.MIME_TYPE,
                 MediaStore.Video.Media.RESOLUTION
         };
-
-        public static final String[] videoThumbColumns = {
-                MediaStore.Video.Thumbnails._ID,
-                MediaStore.Video.Thumbnails.DATA,
-        };
-
     }
 
 }

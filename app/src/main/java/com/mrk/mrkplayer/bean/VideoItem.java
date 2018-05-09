@@ -3,22 +3,22 @@ package com.mrk.mrkplayer.bean;
 import java.io.Serializable;
 
 public class VideoItem implements Serializable {
-    private String mThumbPath;
-    private String mName;
+    private String mPath;
+    private String mDisplayName;
 
-    public void setName(String name) {
-        mName = name;
+    public void setVideoName(String displayName) {
+        mDisplayName = displayName;
     }
 
-    public String getName() {
-        return mName;
+    public String getVideoName() {
+        return mDisplayName;
     }
 
-    public void setThumbPath(String thumbPath) {
-        mThumbPath = thumbPath;
+    public void setVideoPath(String path) {
+        mPath = path;
     }
 
-    public String getThumbPath() {
-        return mThumbPath;
+    public String getVideoPath() {
+        return mPath;
     }
 }
