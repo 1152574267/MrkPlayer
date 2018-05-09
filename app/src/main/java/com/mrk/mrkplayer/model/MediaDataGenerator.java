@@ -14,14 +14,8 @@ public class MediaDataGenerator {
                 MediaStore.Video.Media.TITLE,
                 MediaStore.Video.Media.DATE_ADDED,
                 MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.WIDTH,
-                MediaStore.Video.Media.HEIGHT,
                 MediaStore.Video.Media.DURATION,
                 MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media.DEFAULT_SORT_ORDER,
-                MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Video.Media.BUCKET_ID,
-                MediaStore.Video.Media.CATEGORY,
                 MediaStore.Video.Media.MIME_TYPE,
                 MediaStore.Video.Media.RESOLUTION
         };
@@ -29,8 +23,6 @@ public class MediaDataGenerator {
         public static final String[] videoThumbColumns = {
                 MediaStore.Video.Thumbnails._ID,
                 MediaStore.Video.Thumbnails.DATA,
-                MediaStore.Video.Thumbnails.VIDEO_ID,
-                MediaStore.Video.Thumbnails.DEFAULT_SORT_ORDER
         };
 
     }
