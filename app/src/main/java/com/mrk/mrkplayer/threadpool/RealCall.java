@@ -31,7 +31,7 @@ final class RealCall<T> implements Call {
         try {
             client.dispatcher().executed(this);
         } catch (Exception e) {
-            throw e;
+
         } finally {
             client.dispatcher().finished(this);
         }

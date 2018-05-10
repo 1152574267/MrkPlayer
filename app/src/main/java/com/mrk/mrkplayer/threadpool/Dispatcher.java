@@ -13,7 +13,6 @@ import com.mrk.mrkplayer.threadpool.RealCall.AsyncCall;
 public final class Dispatcher {
     private int maxRequests = 64;
     private int maxRequestsPerHost = 5;
-    private Runnable idleCallback;
 
     private ExecutorService executorService;
     private final Deque<AsyncCall> readyAsyncCalls = new ArrayDeque<>();
@@ -58,10 +57,6 @@ public final class Dispatcher {
 //        return maxRequestsPerHost;
 //    }
 
-//    public synchronized void setIdleCallback(Runnable idleCallback) {
-//        this.idleCallback = idleCallback;
-//    }
-
     synchronized void enqueue(AsyncCall call) {
         if (runningAsyncCalls.size() < maxRequests) {
             runningAsyncCalls.add(call);
@@ -102,16 +97,11 @@ public final class Dispatcher {
 
     private <T> void finished(Deque<T> calls, T call, boolean promoteCalls) {
         int runningCallsCount;
-        Runnable idleCallback;
+
         synchronized (this) {
             if (!calls.remove(call)) throw new AssertionError("Call wasn't in-flight!");
             if (promoteCalls) promoteCalls();
             runningCallsCount = runningCallsCount();
-            idleCallback = this.idleCallback;
-        }
-
-        if (runningCallsCount == 0 && idleCallback != null) {
-            idleCallback.run();
         }
     }
 
