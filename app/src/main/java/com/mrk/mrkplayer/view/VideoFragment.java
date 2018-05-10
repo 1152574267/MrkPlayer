@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,7 @@ import java.util.List;
 public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnItemClickListener, XRecyclerViewAdapter.OnItemLongClickListener {
     private Context mContext;
     private RecyclerView videoList;
-
-    private List<VideoItem> mVideoList;
+    private XRecyclerViewAdapter<VideoItem> mAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -36,49 +36,58 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
         mContext = context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("MMM", "onCreate");
+
+        DbHelper.getInstance().setContext(mContext);
+        List<VideoItem> mVideoList = new ArrayList<VideoItem>();
+        mAdapter = new XRecyclerViewAdapter<VideoItem>(mContext, mVideoList);
+        mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnItemLongClickListener(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        Log.d("MMM", "onCreateView");
 
         View view = inflater.inflate(R.layout.fragment_video, container, false);
-        videoList = (RecyclerView) view.findViewById(R.id.tablist);
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("MMM", "onViewCreated");
+
+        videoList = (RecyclerView) view.findViewById(R.id.tablist);
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 1, GridLayoutManager.VERTICAL, false);
+        videoList.setLayoutManager(layoutManager);
+        videoList.addItemDecoration(new MyDecoration(mContext, MyDecoration.HORIZONTAL_LIST));
+        videoList.setAdapter(mAdapter);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("MMM", "onActivityCreated");
 
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 1, GridLayoutManager.VERTICAL, false);
-        videoList.setLayoutManager(layoutManager);
+        startAsyncTask();
+    }
 
-//        mVideoList = DbHelper.getInstance().getVideoList(mContext);
-        DbHelper.getInstance().setContext(mContext);
-        TaskClient client = new TaskClient();
-        client.newCall(0).enqueue(new Callback<VideoItem>() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("MMM", "onStart");
+    }
 
-            @Override
-            public void onFailure(Call call, Exception e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, List<VideoItem> response) {
-                mVideoList = new ArrayList<VideoItem>();
-                mVideoList.clear();
-                for (int i = 0; i < response.size(); i++) {
-                    mVideoList.add(response.get(i));
-                }
-
-                XRecyclerViewAdapter<VideoItem> adapter = new XRecyclerViewAdapter(mContext, mVideoList);
-                adapter.setOnItemClickListener(VideoFragment.this);
-                adapter.setOnItemLongClickListener(VideoFragment.this);
-                videoList.addItemDecoration(new MyDecoration(mContext, MyDecoration.HORIZONTAL_LIST));
-                videoList.setAdapter(adapter);
-            }
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("MMM", "onResume");
     }
 
     @Override
@@ -89,6 +98,12 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.d("MMM", "setUserVisibleHint isVisibleToUser: " + isVisibleToUser);
+    }
+
+    @Override
     public void onItemClick(int position) {
         Toast.makeText(mContext, "onItemClick: " + position, Toast.LENGTH_SHORT).show();
     }
@@ -96,6 +111,23 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public void onItemLongClick(int position) {
         Toast.makeText(mContext, "onItemLongClick: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    public void startAsyncTask() {
+        TaskClient client = new TaskClient();
+        client.newCall(0).enqueue(new Callback<VideoItem>() {
+
+            @Override
+            public void onFailure(Call call, Exception e) {
+                Log.d("MMM", "exception: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, List<VideoItem> response) {
+                mAdapter.addItem(response);
+                videoList.scrollToPosition(0);
+            }
+        });
     }
 
 }

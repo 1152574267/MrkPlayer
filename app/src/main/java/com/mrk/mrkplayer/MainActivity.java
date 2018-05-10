@@ -30,6 +30,7 @@ public class MainActivity extends FragmentActivity implements
         mViewPager = (ViewPager) findViewById(R.id.tab_viewpager);
 
         fpa = new XFragmentPagerAdapter(getSupportFragmentManager());
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(fpa);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.addOnTabSelectedListener(this);
