@@ -75,6 +75,10 @@ public class XRecyclerViewAdapter<T> extends RecyclerView.Adapter<XRecyclerViewA
         return mDataList.size();
     }
 
+    public T getItem(int position) {
+        return mDataList.get(position);
+    }
+
     public void addItem(List<T> dataList) {
         for (int i = 0; i < dataList.size(); i++) {
             mDataList.add(dataList.get(i));

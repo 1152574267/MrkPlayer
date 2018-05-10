@@ -1,6 +1,7 @@
 package com.mrk.mrkplayer.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -106,6 +107,11 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public void onItemClick(int position) {
         Toast.makeText(mContext, "onItemClick: " + position, Toast.LENGTH_SHORT).show();
+        VideoItem item = (VideoItem) mAdapter.getItem(position);
+        Intent intent = new Intent(mContext, VideoActivity.class);
+        intent.putExtra("videoPath", item.getVideoPath());
+        intent.putExtra("videoTitle", item.getVideoName());
+        mContext.startActivity(intent);
     }
 
     @Override
