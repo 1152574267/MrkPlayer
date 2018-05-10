@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.bean.VideoItem;
-import com.mrk.mrkplayer.util.DbHelper;
 
 import java.util.List;
 
@@ -42,7 +42,8 @@ public class XRecyclerViewAdapter<T> extends RecyclerView.Adapter<XRecyclerViewA
         if (object instanceof VideoItem) {
             VideoItem item = (VideoItem) object;
             holder.tv.setText(item.getVideoName());
-            holder.img.setImageBitmap(DbHelper.getVideoThumb(item.getVideoPath()));
+            Glide.with(mContext).load(item.getVideoPath()).into(holder.img);
+//            holder.img.setImageBitmap(DbHelper.getVideoThumb(item.getVideoPath()));
         }
 
         final int index = position;

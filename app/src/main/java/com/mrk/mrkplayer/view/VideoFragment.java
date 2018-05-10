@@ -15,15 +15,20 @@ import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.adapter.XRecyclerViewAdapter;
 import com.mrk.mrkplayer.bean.VideoItem;
 import com.mrk.mrkplayer.decoration.MyDecoration;
+import com.mrk.mrkplayer.threadpool.Call;
+import com.mrk.mrkplayer.threadpool.Callback;
+import com.mrk.mrkplayer.threadpool.TaskClient;
 import com.mrk.mrkplayer.util.DbHelper;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnItemClickListener, XRecyclerViewAdapter.OnItemLongClickListener {
     private Context mContext;
     private RecyclerView videoList;
 
-    List<VideoItem> mVideoList;
+    private List<VideoItem> mVideoList;
 
     @Override
     public void onAttach(Context context) {
@@ -50,12 +55,31 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 1, GridLayoutManager.VERTICAL, false);
         videoList.setLayoutManager(layoutManager);
 
-        mVideoList = DbHelper.getInstance().getVideoList(mContext);
-        XRecyclerViewAdapter<VideoItem> adapter = new XRecyclerViewAdapter(mContext, mVideoList);
-        adapter.setOnItemClickListener(this);
-        adapter.setOnItemLongClickListener(this);
-        videoList.addItemDecoration(new MyDecoration(mContext, MyDecoration.HORIZONTAL_LIST));
-        videoList.setAdapter(adapter);
+//        mVideoList = DbHelper.getInstance().getVideoList(mContext);
+        DbHelper.getInstance().setContext(mContext);
+        TaskClient client = new TaskClient();
+        client.newCall(0).enqueue(new Callback<VideoItem>() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, List<VideoItem> response) throws IOException {
+                mVideoList = new ArrayList<VideoItem>();
+                mVideoList.clear();
+                for (int i = 0; i < response.size(); i++) {
+                    mVideoList.add(response.get(i));
+                }
+
+                XRecyclerViewAdapter<VideoItem> adapter = new XRecyclerViewAdapter(mContext, mVideoList);
+                adapter.setOnItemClickListener(VideoFragment.this);
+                adapter.setOnItemLongClickListener(VideoFragment.this);
+                videoList.addItemDecoration(new MyDecoration(mContext, MyDecoration.HORIZONTAL_LIST));
+                videoList.setAdapter(adapter);
+            }
+        });
     }
 
     @Override

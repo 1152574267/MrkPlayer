@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHelper {
+    private Context mContext;
+
     private DbHelper() {
 
     }
@@ -26,12 +28,16 @@ public class DbHelper {
         private static final DbHelper instance = new DbHelper();
     }
 
-    public List<VideoItem> getVideoList(Context context) {
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
+    public List<VideoItem> getVideoList() {
         List<VideoItem> videoList = new ArrayList<VideoItem>();
         videoList.clear();
         final String[] videoColumns = MediaDataGenerator.VideoDataGenerator.videoColumns;
 
-        Cursor cursor = context.getContentResolver().query
+        Cursor cursor = mContext.getContentResolver().query
                 (MediaDataGenerator.videoUri,
                         videoColumns,
                         null,
