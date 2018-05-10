@@ -1,7 +1,5 @@
 package com.mrk.mrkplayer.threadpool;
 
-import java.util.List;
-
 public interface Call extends Cloneable {
     void execute();
 

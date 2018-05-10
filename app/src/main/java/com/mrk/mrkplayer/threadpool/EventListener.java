@@ -2,10 +2,12 @@ package com.mrk.mrkplayer.threadpool;
 
 public abstract class EventListener {
     public static final EventListener NONE = new EventListener() {
+
     };
 
     static Factory factory(final EventListener listener) {
         return new Factory() {
+
             public EventListener create(Call call) {
                 return listener;
             }
@@ -24,4 +26,5 @@ public abstract class EventListener {
     public interface Factory {
         EventListener create(Call call);
     }
+
 }
