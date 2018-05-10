@@ -20,7 +20,6 @@ import com.mrk.mrkplayer.threadpool.Callback;
 import com.mrk.mrkplayer.threadpool.TaskClient;
 import com.mrk.mrkplayer.util.DbHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,12 +60,12 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
         client.newCall(0).enqueue(new Callback<VideoItem>() {
 
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(Call call, Exception e) {
 
             }
 
             @Override
-            public void onResponse(Call call, List<VideoItem> response) throws IOException {
+            public void onResponse(Call call, List<VideoItem> response) {
                 mVideoList = new ArrayList<VideoItem>();
                 mVideoList.clear();
                 for (int i = 0; i < response.size(); i++) {

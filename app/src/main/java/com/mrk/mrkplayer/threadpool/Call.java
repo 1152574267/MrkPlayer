@@ -9,10 +9,6 @@ public interface Call extends Cloneable {
 
     boolean isExecuted();
 
-    boolean isCanceled();
-
-    Call clone();
-
     interface Factory {
         Call newCall(int requestCode);
     }

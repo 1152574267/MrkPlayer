@@ -1,11 +1,8 @@
 package com.mrk.mrkplayer.threadpool;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -23,10 +20,6 @@ public final class Dispatcher {
     private final Deque<AsyncCall> runningAsyncCalls = new ArrayDeque<>();
     private final Deque<RealCall> runningSyncCalls = new ArrayDeque<>();
 
-    public Dispatcher(ExecutorService executorService) {
-        this.executorService = executorService;
-    }
-
     public Dispatcher() {
     }
 
@@ -35,39 +28,42 @@ public final class Dispatcher {
             executorService = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS,
                     new SynchronousQueue<Runnable>(), Util.threadFactory("ThreadPool Dispatcher", false));
         }
+
         return executorService;
     }
 
-    public synchronized void setMaxRequests(int maxRequests) {
-        if (maxRequests < 1) {
-            throw new IllegalArgumentException("max < 1: " + maxRequests);
-        }
-        this.maxRequests = maxRequests;
-        promoteCalls();
-    }
+//    public synchronized void setMaxRequests(int maxRequests) {
+//        if (maxRequests < 1) {
+//            throw new IllegalArgumentException("max < 1: " + maxRequests);
+//        }
+//
+//        this.maxRequests = maxRequests;
+//        promoteCalls();
+//    }
 
-    public synchronized int getMaxRequests() {
-        return maxRequests;
-    }
+//    public synchronized int getMaxRequests() {
+//        return maxRequests;
+//    }
 
-    public synchronized void setMaxRequestsPerHost(int maxRequestsPerHost) {
-        if (maxRequestsPerHost < 1) {
-            throw new IllegalArgumentException("max < 1: " + maxRequestsPerHost);
-        }
-        this.maxRequestsPerHost = maxRequestsPerHost;
-        promoteCalls();
-    }
+//    public synchronized void setMaxRequestsPerHost(int maxRequestsPerHost) {
+//        if (maxRequestsPerHost < 1) {
+//            throw new IllegalArgumentException("max < 1: " + maxRequestsPerHost);
+//        }
+//
+//        this.maxRequestsPerHost = maxRequestsPerHost;
+//        promoteCalls();
+//    }
 
-    public synchronized int getMaxRequestsPerHost() {
-        return maxRequestsPerHost;
-    }
+//    public synchronized int getMaxRequestsPerHost() {
+//        return maxRequestsPerHost;
+//    }
 
-    public synchronized void setIdleCallback(Runnable idleCallback) {
-        this.idleCallback = idleCallback;
-    }
+//    public synchronized void setIdleCallback(Runnable idleCallback) {
+//        this.idleCallback = idleCallback;
+//    }
 
     synchronized void enqueue(AsyncCall call) {
-        if (runningAsyncCalls.size() < maxRequests && maxRequestsPerHost < 6) {
+        if (runningAsyncCalls.size() < maxRequests) {
             runningAsyncCalls.add(call);
             executorService().execute(call);
         } else {
@@ -75,23 +71,9 @@ public final class Dispatcher {
         }
     }
 
-    public synchronized void cancelAll() {
-        for (AsyncCall call : readyAsyncCalls) {
-            call.get().cancel();
-        }
-
-        for (AsyncCall call : runningAsyncCalls) {
-            call.get().cancel();
-        }
-
-        for (RealCall call : runningSyncCalls) {
-            call.cancel();
-        }
-    }
-
     private void promoteCalls() {
-        if (runningAsyncCalls.size() >= maxRequests) return; // Already running max capacity.
-        if (readyAsyncCalls.isEmpty()) return; // No ready calls to promote.
+        if (runningAsyncCalls.size() >= maxRequests) return;
+        if (readyAsyncCalls.isEmpty()) return;
 
         for (Iterator<AsyncCall> i = readyAsyncCalls.iterator(); i.hasNext(); ) {
             AsyncCall call = i.next();
@@ -102,7 +84,7 @@ public final class Dispatcher {
                 executorService().execute(call);
             }
 
-            if (runningAsyncCalls.size() >= maxRequests) return; // Reached max capacity.
+            if (runningAsyncCalls.size() >= maxRequests) return;
         }
     }
 
@@ -133,28 +115,8 @@ public final class Dispatcher {
         }
     }
 
-    public synchronized List<Call> queuedCalls() {
-        List<Call> result = new ArrayList<>();
-        for (AsyncCall asyncCall : readyAsyncCalls) {
-            result.add(asyncCall.get());
-        }
-        return Collections.unmodifiableList(result);
-    }
-
-    public synchronized List<Call> runningCalls() {
-        List<Call> result = new ArrayList<>();
-        result.addAll(runningSyncCalls);
-        for (AsyncCall asyncCall : runningAsyncCalls) {
-            result.add(asyncCall.get());
-        }
-        return Collections.unmodifiableList(result);
-    }
-
-    public synchronized int queuedCallsCount() {
-        return readyAsyncCalls.size();
-    }
-
     public synchronized int runningCallsCount() {
         return runningAsyncCalls.size() + runningSyncCalls.size();
     }
+
 }
