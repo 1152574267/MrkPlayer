@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.easyijkplayer.fragments.TracksFragment;
@@ -40,24 +41,23 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
 
     private AndroidMediaController mMediaController;
     private IjkVideoView mVideoView;
-    private TextView mToastTextView;
-    private TableLayout mHudView;
     private DrawerLayout mDrawerLayout;
     private ViewGroup mRightDrawer;
 
     private Settings mSettings;
     private boolean mBackPressed;
 
-    public static Intent newIntent(Context context, String videoPath, String videoTitle) {
-        Intent intent = new Intent(context, VideoActivity.class);
-        intent.putExtra("videoPath", videoPath);
-        intent.putExtra("videoTitle", videoTitle);
-        return intent;
-    }
+//    public static Intent newIntent(Context context, String videoPath, String videoTitle) {
+//        Intent intent = new Intent(context, VideoActivity.class);
+//        intent.putExtra("videoPath", videoPath);
+//        intent.putExtra("videoTitle", videoTitle);
+//
+//        return intent;
+//    }
 
-    public static void intentTo(Context context, String videoPath, String videoTitle) {
-        context.startActivity(newIntent(context, videoPath, videoTitle));
-    }
+//    public static void intentTo(Context context, String videoPath, String videoTitle) {
+//        context.startActivity(newIntent(context, videoPath, videoTitle));
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +102,10 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
             new RecentMediaStorage(this).saveUrlAsync(mVideoPath);
         }
 
-        // init UI
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
         ActionBar actionBar = getSupportActionBar();
         mMediaController = new AndroidMediaController(this, false);
         mMediaController.setSupportActionBar(actionBar);
 
-        mToastTextView = (TextView) findViewById(R.id.toast_text_view);
-        mHudView = (TableLayout) findViewById(R.id.hud_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mRightDrawer = (ViewGroup) findViewById(R.id.right_drawer);
 
@@ -123,7 +117,6 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
 
         mVideoView = (IjkVideoView) findViewById(R.id.video_view);
         mVideoView.setMediaController(mMediaController);
-        mVideoView.setHudView(mHudView);
         // prefer mVideoPath
         if (mVideoPath != null)
             mVideoView.setVideoPath(mVideoPath);
@@ -168,26 +161,15 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_toggle_ratio) {
+            Log.d("CCC", "action_toggle_ratio");
             int aspectRatio = mVideoView.toggleAspectRatio();
             String aspectRatioText = MeasureHelper.getAspectRatioText(this, aspectRatio);
-            mToastTextView.setText(aspectRatioText);
-            mMediaController.showOnce(mToastTextView);
-            return true;
-        } else if (id == R.id.action_toggle_player) {
-            int player = mVideoView.togglePlayer();
-            String playerText = IjkVideoView.getPlayerText(this, player);
-            mToastTextView.setText(playerText);
-            mMediaController.showOnce(mToastTextView);
-            return true;
-        } else if (id == R.id.action_toggle_render) {
-            int render = mVideoView.toggleRender();
-            String renderText = IjkVideoView.getRenderText(this, render);
-            mToastTextView.setText(renderText);
-            mMediaController.showOnce(mToastTextView);
             return true;
         } else if (id == R.id.action_show_info) {
+            Log.d("CCC", "action_show_info");
             mVideoView.showMediaInfo();
         } else if (id == R.id.action_show_tracks) {
+            Log.d("CCC", "action_show_tracks");
             if (mDrawerLayout.isDrawerOpen(mRightDrawer)) {
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.right_drawer);
                 if (f != null) {
