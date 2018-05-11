@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnItemClickListener, XRecyclerViewAdapter.OnItemLongClickListener {
+    private static final String TAG = "VideoFragment";
+
     private Context mContext;
     private RecyclerView videoList;
     private XRecyclerViewAdapter<VideoItem> mAdapter;
@@ -40,7 +42,7 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("MMM", "onCreate");
+        Log.d(TAG, "onCreate");
 
         DbHelper.getInstance().setContext(mContext);
         List<VideoItem> mVideoList = new ArrayList<VideoItem>();
@@ -53,7 +55,7 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        Log.d("MMM", "onCreateView");
+        Log.d(TAG, "onCreateView");
 
         View view = inflater.inflate(R.layout.fragment_video, container, false);
         return view;
@@ -62,7 +64,7 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("MMM", "onViewCreated");
+        Log.d(TAG, "onViewCreated");
 
         videoList = (RecyclerView) view.findViewById(R.id.tablist);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 1, GridLayoutManager.VERTICAL, false);
@@ -74,7 +76,7 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("MMM", "onActivityCreated");
+        Log.d(TAG, "onActivityCreated");
 
         startAsyncTask();
     }
@@ -82,13 +84,13 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("MMM", "onStart");
+        Log.d(TAG, "onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("MMM", "onResume");
+        Log.d(TAG, "onResume");
     }
 
     @Override
@@ -101,12 +103,13 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d("MMM", "setUserVisibleHint isVisibleToUser: " + isVisibleToUser);
+        Log.d(TAG, "setUserVisibleHint isVisibleToUser: " + isVisibleToUser);
     }
 
     @Override
     public void onItemClick(int position) {
         Toast.makeText(mContext, "onItemClick: " + position, Toast.LENGTH_SHORT).show();
+
         VideoItem item = (VideoItem) mAdapter.getItem(position);
         Intent intent = new Intent(mContext, VideoActivity.class);
         intent.putExtra("videoPath", item.getVideoPath());
@@ -125,7 +128,7 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
 
             @Override
             public void onFailure(Call call, Exception e) {
-                Log.d("MMM", "exception: " + e.getMessage());
+                Log.d(TAG, "startAsyncTask exception: " + e.getMessage());
             }
 
             @Override

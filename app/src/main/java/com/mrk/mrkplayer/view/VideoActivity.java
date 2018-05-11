@@ -156,15 +156,15 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_toggle_ratio) {
-            Log.d("CCC", "action_toggle_ratio");
+            Log.d(TAG, "action_toggle_ratio");
             int aspectRatio = mVideoView.toggleAspectRatio();
             String aspectRatioText = MeasureHelper.getAspectRatioText(this, aspectRatio);
             return true;
         } else if (id == R.id.action_show_info) {
-            Log.d("CCC", "action_show_info");
+            Log.d("TAG", "action_show_info");
             mVideoView.showMediaInfo();
         } else if (id == R.id.action_show_tracks) {
-            Log.d("CCC", "action_show_tracks");
+            Log.d("TAG", "action_show_tracks");
             if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.left_drawer);
                 if (f != null) {

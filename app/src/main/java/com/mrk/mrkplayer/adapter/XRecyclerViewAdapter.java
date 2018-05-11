@@ -2,7 +2,6 @@ package com.mrk.mrkplayer.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,17 +71,16 @@ public class XRecyclerViewAdapter<T> extends RecyclerView.Adapter<XRecyclerViewA
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
     public T getItem(int position) {
-        return mDataList.get(position);
+        return mDataList == null ? null : mDataList.get(position);
     }
 
     public void addItem(List<T> dataList) {
         for (int i = 0; i < dataList.size(); i++) {
             mDataList.add(dataList.get(i));
-            Log.d("MMM", "dataList size: " + dataList.size());
         }
 
         notifyDataSetChanged();
