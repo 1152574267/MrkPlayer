@@ -42,7 +42,7 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
     private AndroidMediaController mMediaController;
     private IjkVideoView mVideoView;
     private DrawerLayout mDrawerLayout;
-    private ViewGroup mRightDrawer;
+    private ViewGroup mLeftDrawer;
 
     private Settings mSettings;
     private boolean mBackPressed;
@@ -107,7 +107,7 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         mMediaController.setSupportActionBar(actionBar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mRightDrawer = (ViewGroup) findViewById(R.id.right_drawer);
+        mLeftDrawer = (ViewGroup) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
 
@@ -170,20 +170,20 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
             mVideoView.showMediaInfo();
         } else if (id == R.id.action_show_tracks) {
             Log.d("CCC", "action_show_tracks");
-            if (mDrawerLayout.isDrawerOpen(mRightDrawer)) {
-                Fragment f = getSupportFragmentManager().findFragmentById(R.id.right_drawer);
+            if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.left_drawer);
                 if (f != null) {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.remove(f);
                     transaction.commit();
                 }
-                mDrawerLayout.closeDrawer(mRightDrawer);
+                mDrawerLayout.closeDrawer(mLeftDrawer);
             } else {
                 Fragment f = TracksFragment.newInstance();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.right_drawer, f);
+                transaction.replace(R.id.left_drawer, f);
                 transaction.commit();
-                mDrawerLayout.openDrawer(mRightDrawer);
+                mDrawerLayout.openDrawer(mLeftDrawer);
             }
         }
 
