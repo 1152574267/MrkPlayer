@@ -21,6 +21,7 @@ import com.mrk.mrkplayer.threadpool.Call;
 import com.mrk.mrkplayer.threadpool.Callback;
 import com.mrk.mrkplayer.threadpool.TaskClient;
 import com.mrk.mrkplayer.util.DbHelper;
+import com.mrk.mrkplayer.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +125,7 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
 
     public void startAsyncTask() {
         TaskClient client = new TaskClient();
-        client.newCall(0).enqueue(new Callback<VideoItem>() {
+        client.newCall(Util.REQUEST_VIDEO).enqueue(new Callback<VideoItem>() {
 
             @Override
             public void onFailure(Call call, Exception e) {

@@ -2,6 +2,7 @@ package com.mrk.mrkplayer.threadpool;
 
 import com.mrk.mrkplayer.bean.VideoItem;
 import com.mrk.mrkplayer.util.DbHelper;
+import com.mrk.mrkplayer.util.Util;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ final class RealCall<T> implements Call {
         @Override
         protected void execute() {
             try {
-                if (requestCode == 0) {
+                if (requestCode == Util.REQUEST_VIDEO) {
                     final List<VideoItem> videoList = DbHelper.getInstance().getVideoList();
                     responseCallback.onResponse(RealCall.this, videoList);
                 }
