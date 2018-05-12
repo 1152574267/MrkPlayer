@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mrk.mrkplayer.R;
+import com.mrk.mrkplayer.bean.FileItem;
 import com.mrk.mrkplayer.bean.VideoItem;
 
 import java.util.List;
@@ -44,6 +45,10 @@ public class XRecyclerViewAdapter<T> extends RecyclerView.Adapter<XRecyclerViewA
             holder.tv.setText(item.getVideoName());
             Glide.with(mContext).load(item.getVideoPath()).into(holder.img);
 //            holder.img.setImageBitmap(DbHelper.getVideoThumb(item.getVideoPath()));
+        } else if (object instanceof FileItem) {
+            FileItem item = (FileItem) object;
+            holder.tv.setText(item.getFileName());
+            Glide.with(mContext).load(R.drawable.tab_dictionary).into(holder.img);
         }
 
         final int index = position;

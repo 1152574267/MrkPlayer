@@ -1,17 +1,21 @@
 package com.mrk.mrkplayer.util;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
+        import android.content.Context;
+        import android.database.Cursor;
+        import android.graphics.Bitmap;
+        import android.media.MediaMetadataRetriever;
+        import android.media.ThumbnailUtils;
 
-import com.mrk.mrkplayer.bean.VideoItem;
-import com.mrk.mrkplayer.cache.MemoryLruCache;
-import com.mrk.mrkplayer.model.MediaDataGenerator;
+        import com.mrk.mrkplayer.bean.FileItem;
+        import com.mrk.mrkplayer.bean.VideoItem;
+        import com.mrk.mrkplayer.cache.MemoryLruCache;
+        import com.mrk.mrkplayer.model.MediaDataGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.io.File;
+        import java.util.ArrayList;
+        import java.util.Collections;
+        import java.util.Comparator;
+        import java.util.List;
 
 public class DbHelper {
     private Context mContext;
@@ -68,6 +72,44 @@ public class DbHelper {
         MemoryLruCache.getInstance().putBitmapToMemoryLruCache(MemoryLruCache.getInstance().getCountFromMemLruCache(), bitmap);
 
         return bitmap;
+    }
+
+    public List<FileItem> getFileList(File file) {
+        List<FileItem> fileList = new ArrayList<FileItem>();
+        fileList.clear();
+
+        if (file.exists() && file.canRead() && file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                FileItem item = new FileItem();
+                item.setFileName(files[i].getName());
+                item.setIsDirectory(files[i].isDirectory());
+                fileList.add(item);
+            }
+        }
+
+        if (fileList != null && (fileList.size() > 0)) {
+            sortByName(fileList);
+        }
+        return fileList;
+    }
+
+    public void sortByName(List<FileItem> fileList) {
+        Collections.sort(fileList, new Comparator<FileItem>() {
+
+            @Override
+            public int compare(FileItem o1, FileItem o2) {
+                if (o1.isDirectory() && !o2.isDirectory()) {
+                    return -1;
+                }
+
+                if (!o1.isDirectory() && o2.isDirectory()) {
+                    return 1;
+                }
+
+                return o1.getFileName().compareTo(o2.getFileName());
+            }
+        });
     }
 
 }
