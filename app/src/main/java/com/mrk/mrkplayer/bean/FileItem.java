@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class FileItem implements Serializable {
     private int mIcon;
     private String mName;
+    private String mPath;
     private boolean mIsDirectory;
 
     public void setFileName(String name) {
@@ -29,6 +30,14 @@ public class FileItem implements Serializable {
 
     public boolean isDirectory() {
         return mIsDirectory;
+    }
+
+    public void setFilePath(String path) {
+        mPath = path;
+    }
+
+    public String getFilePath() {
+        return mPath;
     }
 
 }

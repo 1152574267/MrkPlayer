@@ -1,21 +1,21 @@
 package com.mrk.mrkplayer.util;
 
-        import android.content.Context;
-        import android.database.Cursor;
-        import android.graphics.Bitmap;
-        import android.media.MediaMetadataRetriever;
-        import android.media.ThumbnailUtils;
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 
-        import com.mrk.mrkplayer.bean.FileItem;
-        import com.mrk.mrkplayer.bean.VideoItem;
-        import com.mrk.mrkplayer.cache.MemoryLruCache;
-        import com.mrk.mrkplayer.model.MediaDataGenerator;
+import com.mrk.mrkplayer.bean.FileItem;
+import com.mrk.mrkplayer.bean.VideoItem;
+import com.mrk.mrkplayer.cache.MemoryLruCache;
+import com.mrk.mrkplayer.model.MediaDataGenerator;
 
-        import java.io.File;
-        import java.util.ArrayList;
-        import java.util.Collections;
-        import java.util.Comparator;
-        import java.util.List;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class DbHelper {
     private Context mContext;
@@ -84,6 +84,7 @@ public class DbHelper {
                 FileItem item = new FileItem();
                 item.setFileName(files[i].getName());
                 item.setIsDirectory(files[i].isDirectory());
+                item.setFilePath(files[i].getAbsolutePath());
                 fileList.add(item);
             }
         }

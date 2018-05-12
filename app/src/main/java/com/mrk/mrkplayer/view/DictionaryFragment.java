@@ -1,6 +1,7 @@
 package com.mrk.mrkplayer.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.mrk.mrkplayer.bean.FileItem;
 import com.mrk.mrkplayer.decoration.MyDecoration;
 import com.mrk.mrkplayer.util.DbHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated");
 
-        startAsyncTask();
+        startAsyncTask(Environment.getExternalStorageDirectory().getAbsolutePath());
     }
 
     @Override
@@ -109,6 +111,16 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
     @Override
     public void onItemClick(int position) {
         Toast.makeText(mContext, "onItemClick: " + position, Toast.LENGTH_SHORT).show();
+
+        FileItem item = (FileItem) mAdapter.getItem(position);
+        if (item.isDirectory()) {
+            startAsyncTask(item.getFilePath());
+        } else {
+            Intent intent = new Intent(mContext, VideoActivity.class);
+            intent.putExtra("videoPath", item.getFilePath());
+            intent.putExtra("videoTitle", item.getFileName());
+            mContext.startActivity(intent);
+        }
     }
 
     @Override
@@ -116,10 +128,14 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
         Toast.makeText(mContext, "onItemLongClick: " + position, Toast.LENGTH_SHORT).show();
     }
 
-    public void startAsyncTask() {
+    public void startAsyncTask(String path) {
         if (isSdCardMounted) {
-            mAdapter.addItem(DbHelper.getInstance().getFileList(Environment.getExternalStorageDirectory()));
+            File file = new File(path);
+
+            mAdapter.addItem(DbHelper.getInstance().getFileList(file));
             fileList.scrollToPosition(0);
+
+            file = null;
         }
     }
 
