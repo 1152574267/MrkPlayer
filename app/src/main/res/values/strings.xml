@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">MrkPlayer</string>
     <string name="tab_video">视频</string>
-    <string name="tab_music">音乐</string>
+    <string name="tab_music">在线视频</string>
     <string name="tab_dictionary">目录</string>
+    <string name="start_play_online">在线播放</string>
+    <string name="video_uri_input">请输入视频资源网址</string>
 
     <string name="N_A">N/A</string>
     <string name="close">Close</string>
