@@ -33,6 +33,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/bt_play_online"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/uri_layout"
@@ -40,6 +41,19 @@
         android:background="@android:color/holo_green_light"
         android:minWidth="120dp"
         android:text="@string/start_play_online"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/bt_play_shandongweishi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bt_play_online"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/holo_green_light"
+        android:minWidth="120dp"
+        android:text="@string/video_uri_shandong"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 </RelativeLayout>
