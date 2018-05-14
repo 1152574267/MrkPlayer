@@ -97,6 +97,44 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+
+        startAsyncTask(mCurrentPath);
+
+//        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+//
+//            @Override
+//            public void onChanged() {
+//                Log.d(TAG, "onChanged");
+//                super.onChanged();
+//            }
+//
+//            public void onItemRangeChanged(int positionStart, int itemCount) {
+//                Log.d(TAG, "onItemRangeChanged");
+//                mAdapter.notifyItemRangeChanged(positionStart, itemCount);
+//            }
+//
+//            public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+//                // fallback to onItemRangeChanged(positionStart, itemCount) if app
+//                // does not override this method.
+//                Log.d(TAG, "onItemRangeChanged two");
+//                onItemRangeChanged(positionStart, itemCount);
+//            }
+//
+//            public void onItemRangeInserted(int positionStart, int itemCount) {
+//                Log.d(TAG, "onItemRangeInserted");
+//                mAdapter.notifyItemRangeInserted(positionStart, itemCount);
+//            }
+//
+//            public void onItemRangeRemoved(int positionStart, int itemCount) {
+//                Log.d(TAG, "onItemRangeRemoved");
+//                mAdapter.notifyItemRangeRemoved(positionStart, itemCount);
+//            }
+//
+//            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+//                Log.d(TAG, "onItemRangeMoved");
+//                mAdapter.notifyItemMoved(fromPosition, toPosition);
+//            }
+//        });
     }
 
     @Override
