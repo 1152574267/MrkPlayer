@@ -92,6 +92,8 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+
+        startAsyncTask();
     }
 
     @Override
