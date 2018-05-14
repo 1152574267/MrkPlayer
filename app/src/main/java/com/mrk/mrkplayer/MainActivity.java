@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 
 import com.mrk.mrkplayer.adapter.XFragmentPagerAdapter;
 import com.mrk.mrkplayer.model.FragmentGenerator;
+import com.mrk.mrkplayer.view.DictionaryFragment;
 
 public class MainActivity extends FragmentActivity implements
         TabLayout.OnTabSelectedListener {
@@ -62,6 +63,27 @@ public class MainActivity extends FragmentActivity implements
 
     private void onTabItemSelected(int position) {
         Fragment fragment = fpa.getItem(position);
+    }
+
+    @Override
+    public void onBackPressed() {
+        final int index = mViewPager.getCurrentItem();
+        switch (index) {
+            case 0:
+                exitActivity();
+                break;
+            case 1:
+                exitActivity();
+                break;
+            case 2:
+                DictionaryFragment fragment = (DictionaryFragment) (fpa.getItem(index));
+                fragment.onBackPressed();
+                break;
+        }
+    }
+
+    public void exitActivity() {
+        super.onBackPressed();
     }
 
     /**

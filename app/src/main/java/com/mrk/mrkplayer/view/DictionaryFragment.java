@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.mrk.mrkplayer.MainActivity;
 import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.adapter.XRecyclerViewAdapter;
 import com.mrk.mrkplayer.bean.FileItem;
@@ -32,6 +33,8 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
     private XRecyclerViewAdapter<FileItem> mAdapter;
 
     private boolean isSdCardMounted;
+    private String mCurrentPath;
+    private String mSdCardPath;
 
     @Override
     public void onAttach(Context context) {
@@ -51,6 +54,7 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
         mAdapter.setOnItemLongClickListener(this);
 
         isSdCardMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        mSdCardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
     }
 
     @Nullable
@@ -80,7 +84,7 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated");
 
-        startAsyncTask(Environment.getExternalStorageDirectory().getAbsolutePath());
+        startAsyncTask(mSdCardPath);
     }
 
     @Override
@@ -130,6 +134,7 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
 
     public void startAsyncTask(String path) {
         if (isSdCardMounted) {
+            mCurrentPath = path;
             File file = new File(path);
 
             mAdapter.addItem(DbHelper.getInstance().getFileList(file));
@@ -137,6 +142,17 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
 
             file = null;
         }
+    }
+
+    public void onBackPressed() {
+        if (mCurrentPath.trim().equals(mSdCardPath)) {
+            ((MainActivity) mContext).exitActivity();
+            return;
+        }
+
+        File file = new File(mCurrentPath);
+        String mCurrentPath = file.getParent();
+        startAsyncTask(mCurrentPath);
     }
 
 }
