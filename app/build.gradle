@@ -15,10 +15,22 @@ android {
                 cppFlags "-frtti -fexceptions"
             }
         }
+
+//        ndk {
+//            // 设置支持的SO库架构
+//            abiFilters 'armeabi-v7a'
+//        }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs 'src/main/jniLib'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -29,13 +41,18 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs' /**在libs文件夹下找aar文件*/
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:recyclerview-v7:26.0.+'
     compile 'com.android.support:design:26.0.+'
     compile 'com.github.bumptech.glide:glide:4.0.0'
 
-    compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
-    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
-    compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
+    compile(name: 'ijkplayer-java-release', ext: 'aar')
 }
