@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="@string/video_uri_input"
             android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textSize="10sp" />
     </LinearLayout>
 
     <Button
@@ -44,16 +44,14 @@
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
-    <Button
-        android:id="@+id/bt_play_shandongweishi"
+    <TextView
+        android:id="@+id/tv_example"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/bt_play_online"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:background="@android:color/holo_green_light"
-        android:minWidth="120dp"
-        android:text="@string/video_uri_shandong"
+        android:text="例如: http://ivi.bupt.edu.cn/hls/sdhd.m3u8"
         android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textSize="10sp" />
 </RelativeLayout>

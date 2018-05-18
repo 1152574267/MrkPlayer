@@ -4,8 +4,8 @@
     <string name="tab_music">在线视频</string>
     <string name="tab_dictionary">目录</string>
     <string name="start_play_online">在线播放</string>
-    <string name="video_uri_input">请输入视频资源http网址</string>
-    <string name="video_uri_shandong">山东卫视</string>
+    <string name="video_uri_input">http://ivi.bupt.edu.cn/hls/sdhd.m3u8</string>
+    <string name="tip_video_uri_empty">视频网址不能为空！</string>
     <string name="video_setting">设置</string>
 
     <string name="N_A">N/A</string>

@@ -10,16 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mrk.mrkplayer.R;
 
-public class MusicFragment extends Fragment implements View.OnClickListener {
+public class OnlineVideoFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "MusicFragment";
 
     private Context mContext;
     private EditText mUri;
     private Button mPlayOnlineBt;
-    private Button mPlayShandongBt;
 
     @Override
     public void onAttach(Context context) {
@@ -43,9 +43,7 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
 
         mUri = (EditText) view.findViewById(R.id.et_uri);
         mPlayOnlineBt = (Button) view.findViewById(R.id.bt_play_online);
-        mPlayShandongBt = (Button) view.findViewById(R.id.bt_play_shandongweishi);
         mPlayOnlineBt.setOnClickListener(this);
-        mPlayShandongBt.setOnClickListener(this);
     }
 
     @Override
@@ -56,10 +54,15 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
             case R.id.bt_play_online:
                 uri = mUri.getText().toString().trim();
                 break;
-            case R.id.bt_play_shandongweishi:
-                uri = "http://ivi.bupt.edu.cn/hls/sdhd.m3u8";
+            default:
                 break;
         }
+
+        if (uri == null || uri.length() == 0) {
+            Toast.makeText(mContext, R.string.tip_video_uri_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent intent = new Intent(mContext, VideoActivity.class);
         intent.putExtra("videoUri", uri);
         intent.putExtra("videoTitle", "sdhd.m3u8");
