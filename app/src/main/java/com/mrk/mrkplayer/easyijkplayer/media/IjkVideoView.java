@@ -968,6 +968,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                     ijkMediaPlayer = new IjkMediaPlayer();
                     ijkMediaPlayer.native_setLogLevel(IjkMediaPlayer.IJK_LOG_DEBUG);
 
+                    Log.d(TAG, "getUsingMediaCodec: " + mSettings.getUsingMediaCodec()
+                            + ", getUsingOpenSLES: " + mSettings.getUsingOpenSLES()
+                            + ", getUsingMediaCodecAutoRotate: " + mSettings.getUsingMediaCodecAutoRotate()
+                            + ", getMediaCodecHandleResolutionChange: " + mSettings.getMediaCodecHandleResolutionChange()
+                            + ", getPixelFormat: " + mSettings.getPixelFormat()
+                            + ", getEnableDetachedSurfaceTextureView: " + mSettings.getEnableDetachedSurfaceTextureView());
+                    // 是否使用MediaCodec硬解码，ijkplayer没有使用硬解码
                     if (mSettings.getUsingMediaCodec()) {
                         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
                         if (mSettings.getUsingMediaCodecAutoRotate()) {
@@ -984,25 +991,27 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 0);
                     }
 
+                    // 是否使用OpenSLES，ijkplayer没有使用OpenSLES
                     if (mSettings.getUsingOpenSLES()) {
                         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "opensles", 1);
                     } else {
                         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "opensles", 0);
                     }
 
+                    // 视频渲染格式
                     String pixelFormat = mSettings.getPixelFormat();
                     if (TextUtils.isEmpty(pixelFormat)) {
                         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "overlay-format", IjkMediaPlayer.SDL_FCC_RV32);
                     } else {
                         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "overlay-format", pixelFormat);
                     }
+                    // 控制着允许丢帧的范围
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 1);
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", 0);
-
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "http-detect-range-support", 0);
-
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);
                 }
+
                 mediaPlayer = ijkMediaPlayer;
             }
             break;
@@ -1014,10 +1023,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
         return mediaPlayer;
     }
-
-    //-------------------------
-    // Extend: Background
-    //-------------------------
 
     private boolean mEnableBackgroundPlay = false;
 
