@@ -165,8 +165,9 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
             String aspectRatioText = MeasureHelper.getAspectRatioText(this, aspectRatio);
             return true;
         } else if (id == R.id.action_show_info) {
-            Log.d("TAG", "action_show_info");
-            mVideoView.showMediaInfo();
+//            Log.d("TAG", "action_show_info");
+//            mVideoView.showMediaInfo();
+            startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.action_show_tracks) {
             Log.d("TAG", "action_show_tracks");
             if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
