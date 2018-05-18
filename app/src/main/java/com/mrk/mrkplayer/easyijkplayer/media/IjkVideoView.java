@@ -899,33 +899,32 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     // REMOVED: setSubtitleWidget();
     // REMOVED: getSubtitleLooper();
 
-    //-------------------------
-    // Extend: Aspect Ratio
-    //-------------------------
-
+    // 支持的视频播放比例
     private static final int[] s_allAspectRatio = {
             IRenderView.AR_ASPECT_FIT_PARENT,
             IRenderView.AR_ASPECT_FILL_PARENT,
             IRenderView.AR_ASPECT_WRAP_CONTENT,
-            // IRenderView.AR_MATCH_PARENT,
+            IRenderView.AR_MATCH_PARENT,
             IRenderView.AR_16_9_FIT_PARENT,
-            IRenderView.AR_4_3_FIT_PARENT};
-    private int mCurrentAspectRatioIndex = 0;
-    private int mCurrentAspectRatio = s_allAspectRatio[0];
+            IRenderView.AR_4_3_FIT_PARENT
+    };
+    private int mCurrentAspectRatioIndex = 1;
+    private int mCurrentAspectRatio = s_allAspectRatio[1];
 
+    // 改变视频播放比例
     public int toggleAspectRatio() {
         mCurrentAspectRatioIndex++;
         mCurrentAspectRatioIndex %= s_allAspectRatio.length;
 
         mCurrentAspectRatio = s_allAspectRatio[mCurrentAspectRatioIndex];
-        if (mRenderView != null)
+        if (mRenderView != null) {
             mRenderView.setAspectRatio(mCurrentAspectRatio);
+        }
+
         return mCurrentAspectRatio;
     }
 
-    //-------------------------
-    // Extend: Render
-    //-------------------------
+    // 视频渲染输出
     public static final int RENDER_NONE = 0;
     public static final int RENDER_SURFACE_VIEW = 1;
     public static final int RENDER_TEXTURE_VIEW = 2;
@@ -934,82 +933,36 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private int mCurrentRenderIndex = 0;
     private int mCurrentRender = RENDER_NONE;
 
+    // 视频渲染输出
     private void initRenders() {
         mAllRenders.clear();
 
-        if (mSettings.getEnableSurfaceView())
+        if (mSettings.getEnableSurfaceView()) {
             mAllRenders.add(RENDER_SURFACE_VIEW);
-        if (mSettings.getEnableTextureView() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+        }
+        if (mSettings.getEnableTextureView() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             mAllRenders.add(RENDER_TEXTURE_VIEW);
-        if (mSettings.getEnableNoView())
+        }
+        if (mSettings.getEnableNoView()) {
             mAllRenders.add(RENDER_NONE);
-
-        if (mAllRenders.isEmpty())
+        }
+        if (mAllRenders.isEmpty()) {
             mAllRenders.add(RENDER_SURFACE_VIEW);
+        }
         mCurrentRender = mAllRenders.get(mCurrentRenderIndex);
+        Log.d(TAG, "mCurrentRender: " + mCurrentRender);
         setRender(mCurrentRender);
     }
 
+    // 改变视频渲染输出
     public int toggleRender() {
         mCurrentRenderIndex++;
         mCurrentRenderIndex %= mAllRenders.size();
 
         mCurrentRender = mAllRenders.get(mCurrentRenderIndex);
         setRender(mCurrentRender);
+
         return mCurrentRender;
-    }
-
-    @NonNull
-    public static String getRenderText(Context context, int render) {
-        String text;
-        switch (render) {
-            case RENDER_NONE:
-                text = context.getString(R.string.VideoView_render_none);
-                break;
-            case RENDER_SURFACE_VIEW:
-                text = context.getString(R.string.VideoView_render_surface_view);
-                break;
-            case RENDER_TEXTURE_VIEW:
-                text = context.getString(R.string.VideoView_render_texture_view);
-                break;
-            default:
-                text = context.getString(R.string.N_A);
-                break;
-        }
-        return text;
-    }
-
-    //-------------------------
-    // Extend: Player
-    //-------------------------
-    public int togglePlayer() {
-        if (mMediaPlayer != null)
-            mMediaPlayer.release();
-
-        if (mRenderView != null)
-            mRenderView.getView().invalidate();
-        openVideo();
-        return mSettings.getPlayer();
-    }
-
-    @NonNull
-    public static String getPlayerText(Context context, int player) {
-        String text;
-        switch (player) {
-            case Settings.PV_PLAYER__AndroidMediaPlayer:
-                text = context.getString(R.string.VideoView_player_AndroidMediaPlayer);
-                break;
-            case Settings.PV_PLAYER__IjkMediaPlayer:
-                text = context.getString(R.string.VideoView_player_IjkMediaPlayer);
-                break;
-            case Settings.PV_PLAYER__IjkExoMediaPlayer:
-                text = context.getString(R.string.VideoView_player_IjkExoMediaPlayer);
-                break;
-            default:
-                text = context.getString(R.string.N_A);
-                break;
-        }
-        return text;
     }
 
     public IMediaPlayer createPlayer(int playerType) {
