@@ -1,17 +1,21 @@
 package com.mrk.mrkplayer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.mrk.mrkplayer.adapter.XFragmentPagerAdapter;
 import com.mrk.mrkplayer.model.FragmentGenerator;
 import com.mrk.mrkplayer.view.DictionaryFragment;
+import com.mrk.mrkplayer.view.SettingsActivity;
 
-public class MainActivity extends FragmentActivity implements
+public class MainActivity extends AppCompatActivity implements
         TabLayout.OnTabSelectedListener {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -27,6 +31,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void initView() {
+        getSupportActionBar().hide();
+
         mTabLayout = (TabLayout) findViewById(R.id.bottom_tab_list);
         mViewPager = (ViewPager) findViewById(R.id.tab_viewpager);
 
@@ -95,6 +101,27 @@ public class MainActivity extends FragmentActivity implements
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_setting, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_setting) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

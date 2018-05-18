@@ -6,29 +6,22 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.mrk.mrkplayer.R;
-import com.mrk.mrkplayer.easyijkplayer.fragments.TracksFragment;
 import com.mrk.mrkplayer.easyijkplayer.media.AndroidMediaController;
 import com.mrk.mrkplayer.easyijkplayer.media.IjkVideoView;
-import com.mrk.mrkplayer.easyijkplayer.media.MeasureHelper;
 import com.mrk.mrkplayer.easyijkplayer.media.RecentMediaStorage;
 import com.mrk.mrkplayer.easyijkplayer.media.Settings;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.misc.ITrackInfo;
 
-public class VideoActivity extends AppCompatActivity implements TracksFragment.ITrackHolder {
+public class VideoActivity extends AppCompatActivity {
     private static final String TAG = "VideoActivity";
 
     private String mVideoPath;
@@ -42,18 +35,6 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
 
     private Settings mSettings;
     private boolean mBackPressed;
-
-//    public static Intent newIntent(Context context, String videoPath, String videoTitle) {
-//        Intent intent = new Intent(context, VideoActivity.class);
-//        intent.putExtra("videoPath", videoPath);
-//        intent.putExtra("videoTitle", videoTitle);
-//
-//        return intent;
-//    }
-
-//    public static void intentTo(Context context, String videoPath, String videoTitle) {
-//        context.startActivity(newIntent(context, videoPath, videoTitle));
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +83,10 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         ActionBar actionBar = getSupportActionBar();
         mMediaController = new AndroidMediaController(this, false);
         mMediaController.setSupportActionBar(actionBar);
+        actionBar.hide();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftDrawer = (ViewGroup) findViewById(R.id.left_drawer);
-
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
 
         // init player
@@ -115,17 +96,18 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         mVideoView = (IjkVideoView) findViewById(R.id.video_view);
         mVideoView.setMediaController(mMediaController);
         // prefer mVideoPath
-        if (mVideoPath != null)
+        if (mVideoPath != null) {
             mVideoView.setVideoPath(mVideoPath);
-        else if (mVideoUri != null)
+        } else if (mVideoUri != null) {
             mVideoView.setVideoURI(mVideoUri);
-        else if (mVideoUriStr != null)
+        } else if (mVideoUriStr != null) {
             mVideoView.setVideoURI(Uri.parse(mVideoUriStr));
-        else {
+        } else {
             Log.e(TAG, "Null Data Source\n");
             finish();
             return;
         }
+
         mVideoView.start();
     }
 
@@ -147,72 +129,8 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         } else {
             mVideoView.enterBackground();
         }
+
         IjkMediaPlayer.native_profileEnd();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_player, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_toggle_ratio) {
-            Log.d(TAG, "action_toggle_ratio");
-            int aspectRatio = mVideoView.toggleAspectRatio();
-            String aspectRatioText = MeasureHelper.getAspectRatioText(this, aspectRatio);
-            return true;
-        } else if (id == R.id.action_show_info) {
-//            Log.d("TAG", "action_show_info");
-//            mVideoView.showMediaInfo();
-            startActivity(new Intent(this, SettingsActivity.class));
-        } else if (id == R.id.action_show_tracks) {
-            Log.d("TAG", "action_show_tracks");
-            if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
-                Fragment f = getSupportFragmentManager().findFragmentById(R.id.left_drawer);
-                if (f != null) {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.remove(f);
-                    transaction.commit();
-                }
-                mDrawerLayout.closeDrawer(mLeftDrawer);
-            } else {
-                Fragment f = TracksFragment.newInstance();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.left_drawer, f);
-                transaction.commit();
-                mDrawerLayout.openDrawer(mLeftDrawer);
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public ITrackInfo[] getTrackInfo() {
-        if (mVideoView == null)
-            return null;
-
-        return mVideoView.getTrackInfo();
-    }
-
-    @Override
-    public void selectTrack(int stream) {
-        mVideoView.selectTrack(stream);
-    }
-
-    @Override
-    public void deselectTrack(int stream) {
-        mVideoView.deselectTrack(stream);
-    }
-
-    @Override
-    public int getSelectedTrack(int trackType) {
-        if (mVideoView == null)
-            return -1;
-
-        return mVideoView.getSelectedTrack(trackType);
-    }
 }
