@@ -63,7 +63,7 @@ public class OnlineVideoFragment extends Fragment implements View.OnClickListene
             return;
         }
 
-        Intent intent = new Intent(mContext, VideoActivity.class);
+        Intent intent = new Intent(mContext, PlayerActivity.class);
         intent.putExtra("videoUri", uri);
         intent.putExtra("videoTitle", "sdhd.m3u8");
         mContext.startActivity(intent);

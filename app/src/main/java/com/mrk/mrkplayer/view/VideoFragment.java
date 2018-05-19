@@ -114,7 +114,7 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
         Toast.makeText(mContext, "onItemClick: " + position, Toast.LENGTH_SHORT).show();
 
         VideoItem item = (VideoItem) mAdapter.getItem(position);
-        Intent intent = new Intent(mContext, VideoActivity.class);
+        Intent intent = new Intent(mContext, PlayerActivity.class);
         intent.putExtra("videoPath", item.getVideoPath());
         intent.putExtra("videoTitle", item.getVideoName());
         mContext.startActivity(intent);

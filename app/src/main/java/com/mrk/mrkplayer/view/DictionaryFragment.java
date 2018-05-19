@@ -158,7 +158,7 @@ public class DictionaryFragment extends Fragment implements XRecyclerViewAdapter
         if (item.isDirectory()) {
             startAsyncTask(item.getFilePath());
         } else {
-            Intent intent = new Intent(mContext, VideoActivity.class);
+            Intent intent = new Intent(mContext, PlayerActivity.class);
             intent.putExtra("videoPath", item.getFilePath());
             intent.putExtra("videoTitle", item.getFileName());
             mContext.startActivity(intent);

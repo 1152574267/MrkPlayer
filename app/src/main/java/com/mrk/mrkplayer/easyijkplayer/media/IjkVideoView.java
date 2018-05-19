@@ -789,6 +789,14 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         mTargetState = STATE_PAUSED;
     }
 
+    public void onPause() {
+        release(false);
+    }
+
+    public void onResume() {
+        openVideo();
+    }
+
     public void suspend() {
         release(false);
     }
@@ -904,6 +912,31 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
 
         return mCurrentAspectRatio;
+    }
+
+    /**
+     * 设置播放区域拉伸类型
+     */
+    public void setAspectRatio(int aspectRatio) {
+        for (int i = 0; i < s_allAspectRatio.length; i++) {
+            if (s_allAspectRatio[i] == aspectRatio) {
+                mCurrentAspectRatioIndex = i;
+                if (mRenderView != null) {
+                    mRenderView.setAspectRatio(mCurrentAspectRatio);
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * 设置旋转角度
+     */
+    public void setPlayerRotation(int rotation) {
+        mVideoRotationDegree = rotation;
+        if (mRenderView != null) {
+            mRenderView.setVideoRotation(mVideoRotationDegree);
+        }
     }
 
     // 视频渲染输出
