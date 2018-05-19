@@ -28,6 +28,8 @@
         <activity android:name=".view.VideoActivity" />
         <activity android:name=".view.SettingsActivity" />
         <activity android:name=".view.PlayerActivity" />
+
+        <service android:name=".easyijkplayer.services.MediaPlayerService" />
     </application>
 
 </manifest>
