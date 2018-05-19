@@ -82,8 +82,10 @@ public class VideoActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         mMediaController = new AndroidMediaController(this, false);
-        mMediaController.setSupportActionBar(actionBar);
-        actionBar.hide();
+        if (actionBar != null) {
+            mMediaController.setSupportActionBar(actionBar);
+            actionBar.hide();
+        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftDrawer = (ViewGroup) findViewById(R.id.left_drawer);

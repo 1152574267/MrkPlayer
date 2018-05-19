@@ -47,17 +47,20 @@ public class DbHelper {
                         null,
                         null,
                         videoColumns[3]);
-        cursor.moveToFirst();
-        do {
-            String name = cursor.getString(cursor.getColumnIndex(videoColumns[1]));
-            String path = cursor.getString(cursor.getColumnIndex(videoColumns[4]));
-            VideoItem item = new VideoItem();
-            item.setVideoName(name);
-            item.setVideoPath(path);
-            videoList.add(item);
-        } while (cursor.moveToNext());
-        cursor.close();
-        cursor = null;
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            do {
+                String name = cursor.getString(cursor.getColumnIndex(videoColumns[1]));
+                String path = cursor.getString(cursor.getColumnIndex(videoColumns[4]));
+                VideoItem item = new VideoItem();
+                item.setVideoName(name);
+                item.setVideoPath(path);
+                videoList.add(item);
+            } while (cursor.moveToNext());
+            cursor.close();
+            cursor = null;
+        }
 
         return videoList;
     }

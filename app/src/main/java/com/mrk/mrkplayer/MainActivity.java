@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +32,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initView() {
-        getSupportActionBar().hide();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
         mTabLayout = (TabLayout) findViewById(R.id.bottom_tab_list);
         mViewPager = (ViewPager) findViewById(R.id.tab_viewpager);
