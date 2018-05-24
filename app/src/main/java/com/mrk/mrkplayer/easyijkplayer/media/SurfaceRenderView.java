@@ -64,14 +64,12 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         return true;
     }
 
-    //--------------------
-    // Layout & Measure
-    //--------------------
     @Override
     public void setVideoSize(int videoWidth, int videoHeight) {
         if (videoWidth > 0 && videoHeight > 0) {
             mMeasureHelper.setVideoSize(videoWidth, videoHeight);
             getHolder().setFixedSize(videoWidth, videoHeight);
+
             requestLayout();
         }
     }
@@ -80,6 +78,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
     public void setVideoSampleAspectRatio(int videoSarNum, int videoSarDen) {
         if (videoSarNum > 0 && videoSarDen > 0) {
             mMeasureHelper.setVideoSampleAspectRatio(videoSarNum, videoSarDen);
+
             requestLayout();
         }
     }
@@ -92,6 +91,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
     @Override
     public void setAspectRatio(int aspectRatio) {
         mMeasureHelper.setAspectRatio(aspectRatio);
+
         requestLayout();
     }
 
@@ -101,10 +101,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         setMeasuredDimension(mMeasureHelper.getMeasuredWidth(), mMeasureHelper.getMeasuredHeight());
     }
 
-    //--------------------
-    // SurfaceViewHolder
-    //--------------------
-
+    // SurfaceHolder
     private static final class InternalSurfaceHolder implements IRenderView.ISurfaceHolder {
         private SurfaceRenderView mSurfaceView;
         private SurfaceHolder mSurfaceHolder;
@@ -147,16 +144,15 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         @Nullable
         @Override
         public Surface openSurface() {
-            if (mSurfaceHolder == null)
+            if (mSurfaceHolder == null) {
                 return null;
+            }
+
             return mSurfaceHolder.getSurface();
         }
     }
 
-    //-------------------------
     // SurfaceHolder.Callback
-    //-------------------------
-
     @Override
     public void addRenderCallback(IRenderCallback callback) {
         mSurfaceCallback.addRenderCallback(callback);
@@ -188,14 +184,16 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
 
             ISurfaceHolder surfaceHolder = null;
             if (mSurfaceHolder != null) {
-                if (surfaceHolder == null)
+                if (surfaceHolder == null) {
                     surfaceHolder = new InternalSurfaceHolder(mWeakSurfaceView.get(), mSurfaceHolder);
+                }
                 callback.onSurfaceCreated(surfaceHolder, mWidth, mHeight);
             }
 
             if (mIsFormatChanged) {
-                if (surfaceHolder == null)
+                if (surfaceHolder == null) {
                     surfaceHolder = new InternalSurfaceHolder(mWeakSurfaceView.get(), mSurfaceHolder);
+                }
                 callback.onSurfaceChanged(surfaceHolder, mFormat, mWidth, mHeight);
             }
         }
@@ -250,10 +248,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         }
     }
 
-    //--------------------
     // Accessibility
-    //--------------------
-
     @Override
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
         super.onInitializeAccessibilityEvent(event);
@@ -268,4 +263,5 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
             info.setClassName(SurfaceRenderView.class.getName());
         }
     }
+
 }
