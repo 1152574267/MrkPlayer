@@ -369,26 +369,26 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     }
 
-    IMediaPlayer.OnVideoSizeChangedListener mSizeChangedListener =
-            new IMediaPlayer.OnVideoSizeChangedListener() {
+    IMediaPlayer.OnVideoSizeChangedListener mSizeChangedListener = new IMediaPlayer.OnVideoSizeChangedListener() {
 
-                public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
-                    mVideoWidth = mp.getVideoWidth();
-                    mVideoHeight = mp.getVideoHeight();
-                    mVideoSarNum = mp.getVideoSarNum();
-                    mVideoSarDen = mp.getVideoSarDen();
-                    if (mVideoWidth != 0 && mVideoHeight != 0) {
-                        if (mRenderView != null) {
-                            mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
-                            mRenderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
-                        }
-                        // REMOVED: getHolder().setFixedSize(mVideoWidth, mVideoHeight);
-                        requestLayout();
-                    }
+        public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
+            mVideoWidth = mp.getVideoWidth();
+            mVideoHeight = mp.getVideoHeight();
+            mVideoSarNum = mp.getVideoSarNum();
+            mVideoSarDen = mp.getVideoSarDen();
+
+            if (mVideoWidth != 0 && mVideoHeight != 0) {
+                if (mRenderView != null) {
+                    mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
+                    mRenderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
                 }
-            };
+                // REMOVED: getHolder().setFixedSize(mVideoWidth, mVideoHeight);
+                requestLayout();
+            }
+        }
+    };
 
-    //注册一个回调函数，在视频预处理完成后调用
+    // 注册一个回调函数，在视频预处理完成后调用
     IMediaPlayer.OnPreparedListener mPreparedListener = new IMediaPlayer.OnPreparedListener() {
 
         public void onPrepared(IMediaPlayer mp) {
@@ -444,7 +444,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     };
 
-    //播放完成回调
+    // 播放完成回调
     private IMediaPlayer.OnCompletionListener mCompletionListener = new IMediaPlayer.OnCompletionListener() {
 
         public void onCompletion(IMediaPlayer mp) {
@@ -459,7 +459,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     };
 
-    //事件发生回调
+    // 事件发生回调
     private IMediaPlayer.OnInfoListener mInfoListener = new IMediaPlayer.OnInfoListener() {
 
         public boolean onInfo(IMediaPlayer mp, int arg1, int arg2) {
@@ -515,7 +515,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     };
 
-    //播放错误回调
+    // 播放错误回调
     private IMediaPlayer.OnErrorListener mErrorListener = new IMediaPlayer.OnErrorListener() {
 
         public boolean onError(IMediaPlayer mp, int framework_err, int impl_err) {
