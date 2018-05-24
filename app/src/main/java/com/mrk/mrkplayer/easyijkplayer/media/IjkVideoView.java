@@ -131,11 +131,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         initVideoView(context);
     }
 
-    // REMOVED: onMeasure
-    // REMOVED: onInitializeAccessibilityEvent
-    // REMOVED: onInitializeAccessibilityNodeInfo
-    // REMOVED: resolveAdjustedSize
-
     private void initVideoView(Context context) {
         mAppContext = context.getApplicationContext();
         mSettings = new Settings(mAppContext);
@@ -166,8 +161,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     public void setRenderView(IRenderView renderView) {
         if (mRenderView != null) {
-            if (mMediaPlayer != null)
+            if (mMediaPlayer != null) {
                 mMediaPlayer.setDisplay(null);
+            }
 
             View renderUIView = mRenderView.getView();
             mRenderView.removeRenderCallback(mSHCallback);
@@ -175,15 +171,18 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             removeView(renderUIView);
         }
 
-        if (renderView == null)
+        if (renderView == null) {
             return;
+        }
 
         mRenderView = renderView;
         renderView.setAspectRatio(mCurrentAspectRatio);
-        if (mVideoWidth > 0 && mVideoHeight > 0)
+        if (mVideoWidth > 0 && mVideoHeight > 0) {
             renderView.setVideoSize(mVideoWidth, mVideoHeight);
-        if (mVideoSarNum > 0 && mVideoSarDen > 0)
+        }
+        if (mVideoSarNum > 0 && mVideoSarDen > 0) {
             renderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
+        }
 
         View renderUIView = mRenderView.getView();
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
@@ -224,9 +223,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     }
 
-    public void setHudView(TableLayout tableLayout) {
-        mHudViewHolder = new InfoHudViewHolder(getContext(), tableLayout);
-    }
+//    public void setHudView(TableLayout tableLayout) {
+//        mHudViewHolder = new InfoHudViewHolder(getContext(), tableLayout);
+//    }
 
     //设置视频路径
     public void setVideoPath(String path) {
@@ -256,9 +255,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         requestLayout();
         invalidate();
     }
-
-    // REMOVED: addSubtitleSource
-    // REMOVED: mPendingSubtitleTracks
 
     // 停止视频播放，并释放资源
     public void stopPlayback() {
@@ -1049,6 +1045,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 10240L);
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L);
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0L);
+//                    ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "async,cache,crypto,file,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data,concat,subfile,udp,ffconcat");
+//                    ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT,"safe",0);
                 }
 
                 mediaPlayer = ijkMediaPlayer;
