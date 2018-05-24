@@ -616,8 +616,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     // REMOVED: mSHCallback
     private void bindSurfaceHolder(IMediaPlayer mp, IRenderView.ISurfaceHolder holder) {
-        if (mp == null)
+        if (mp == null) {
             return;
+        }
 
         if (holder == null) {
             mp.setDisplay(null);
@@ -644,6 +645,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 if (mSeekWhenPrepared != 0) {
                     seekTo(mSeekWhenPrepared);
                 }
+
                 start();
             }
         }
@@ -656,10 +658,11 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             }
 
             mSurfaceHolder = holder;
-            if (mMediaPlayer != null)
+            if (mMediaPlayer != null) {
                 bindSurfaceHolder(mMediaPlayer, holder);
-            else
+            } else {
                 openVideo();
+            }
         }
 
         @Override
@@ -678,8 +681,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     };
 
     public void releaseWithoutStop() {
-        if (mMediaPlayer != null)
+        if (mMediaPlayer != null) {
             mMediaPlayer.setDisplay(null);
+        }
     }
 
     /*
