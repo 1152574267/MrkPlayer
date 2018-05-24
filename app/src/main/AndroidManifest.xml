@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
+        android:name=".EasyVideoApplication"
         android:allowBackup="true"
         android:icon="@drawable/tab_video"
         android:label="@string/app_name"
