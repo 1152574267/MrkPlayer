@@ -763,7 +763,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         return super.onKeyDown(keyCode, event);
     }
 
-    //改变媒体控制器显隐
+    // 改变媒体控制器显隐
     private void toggleMediaControlsVisiblity() {
         if (mMediaController.isShowing()) {
             mMediaController.hide();
