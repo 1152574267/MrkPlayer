@@ -13,6 +13,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
 
+//import com.danikula.videocache.HttpProxyCacheServer;
+//import com.mrk.mrkplayer.EasyVideoApplication;
 import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.easyijkplayer.media.AndroidMediaController;
 import com.mrk.mrkplayer.easyijkplayer.media.IjkVideoView;
@@ -97,6 +99,11 @@ public class VideoActivity extends AppCompatActivity {
 
         mVideoView = (IjkVideoView) findViewById(R.id.video_view);
         mVideoView.setMediaController(mMediaController);
+
+//        HttpProxyCacheServer proxy = EasyVideoApplication.getProxy(getApplicationContext());
+//        String proxyUrl = proxy.getProxyUrl(mVideoUriStr);
+//        Log.d("CCC", "url: " + url + ", proxyUrl: " + proxyUrl);
+
         // prefer mVideoPath
         if (mVideoPath != null) {
             mVideoView.setVideoPath(mVideoPath);
