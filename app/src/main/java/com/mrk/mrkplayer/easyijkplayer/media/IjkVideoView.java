@@ -796,6 +796,10 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         release(false);
     }
 
+    public void resume() {
+        openVideo();
+    }
+
     public void onResume() {
         openVideo();
     }
@@ -804,11 +808,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         release(false);
     }
 
-    public void resume() {
-        openVideo();
-    }
-
-    //获取总长度
+    // 获取总长度
     @Override
     public int getDuration() {
         if (isInPlaybackState()) {
@@ -818,7 +818,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         return -1;
     }
 
-    //获取当前播放位置
+    // 获取当前播放位置
     @Override
     public int getCurrentPosition() {
         if (isInPlaybackState()) {
@@ -828,7 +828,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         return 0;
     }
 
-    //设置播放位置,单位毫秒
+    // 设置播放位置,单位毫秒
     @Override
     public void seekTo(int msec) {
         if (isInPlaybackState()) {
@@ -840,13 +840,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     }
 
-    //是否正在播放
+    // 是否正在播放
     @Override
     public boolean isPlaying() {
         return isInPlaybackState() && mMediaPlayer.isPlaying();
     }
 
-    //获取缓冲百分比
+    // 获取缓冲百分比
     @Override
     public int getBufferPercentage() {
         if (mMediaPlayer != null) {
@@ -882,15 +882,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public int getAudioSessionId() {
         return 0;
     }
-
-    // REMOVED: getAudioSessionId();
-    // REMOVED: onAttachedToWindow();
-    // REMOVED: onDetachedFromWindow();
-    // REMOVED: onLayout();
-    // REMOVED: draw();
-    // REMOVED: measureAndLayoutSubtitleWidget();
-    // REMOVED: setSubtitleWidget();
-    // REMOVED: getSubtitleLooper();
 
     // 支持的视频播放比例
     private static final int[] s_allAspectRatio = {
