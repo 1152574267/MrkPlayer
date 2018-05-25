@@ -40,9 +40,8 @@ public class PlayerActivity extends Activity {
         player = new EasyVideoView(this)
                 .setScaleType(PlayStateParams.fitparent)
                 .forbidTouch(false)
-                .setForbidDoulbeUp(false)
                 .hideMenu(true)
-                .hideSteam(true)
+//                .hideSteam(true)
                 .setProcessDurationOrientation(PlayStateParams.PROCESS_LANDSCAPE)
                 .showThumbnail(new OnShowThumbnailListener() {
 

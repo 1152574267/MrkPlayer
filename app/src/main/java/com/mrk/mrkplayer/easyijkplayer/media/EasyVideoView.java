@@ -249,11 +249,13 @@ public class EasyVideoView {
                     break;
                 case R.id.ijk_iv_rotation:
                     // 旋转视频方向(视频旋转按钮)
-                    setPlayerRotation();
+//                    setPlayerRotation();
+                    toggleFullScreen();
                     break;
                 case R.id.app_video_fullscreen:
                     // 视频全屏切换（视频全屏按钮）
-                    toggleFullScreen();
+//                    toggleFullScreen();
+                    toggleAspectRatio();
                     break;
                 case R.id.play_icon:
                 case R.id.app_video_play: {
