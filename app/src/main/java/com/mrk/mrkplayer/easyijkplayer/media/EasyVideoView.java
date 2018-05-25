@@ -346,7 +346,12 @@ public class EasyVideoView {
 
         /**数值的改变*/
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            setBrightness(progress);
+            if (!fromUser) {
+                // 不是用户拖动的
+                return;
+            } else {
+                setBrightness(progress);
+            }
         }
 
         /**开始拖动*/
@@ -392,15 +397,21 @@ public class EasyVideoView {
 
         /**数值的改变*/
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            int index = (int) (mMaxVolume * progress * 0.01);
-            if (index > mMaxVolume) {
-                index = mMaxVolume;
-            } else if (index < 0) {
-                index = 0;
-            }
+            if (!fromUser) {
+                // 不是用户拖动的
+                return;
+            } else {
+                int index = (int) (mMaxVolume * progress * 0.01);
 
-            // 变更声音
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);
+                if (index > mMaxVolume) {
+                    index = mMaxVolume;
+                } else if (index < 0) {
+                    index = 0;
+                }
+
+                // 变更声音
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);
+            }
         }
 
         /**开始拖动*/
