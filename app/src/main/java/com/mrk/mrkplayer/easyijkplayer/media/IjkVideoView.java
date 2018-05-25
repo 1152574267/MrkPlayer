@@ -783,12 +783,11 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     @Override
     public void pause() {
-        if (isInPlaybackState()) {
-            if (mMediaPlayer.isPlaying()) {
-                mMediaPlayer.pause();
-                mCurrentState = STATE_PAUSED;
-            }
+        if (isPlaying()) {
+            mMediaPlayer.pause();
+            mCurrentState = STATE_PAUSED;
         }
+
         mTargetState = STATE_PAUSED;
     }
 

@@ -257,7 +257,7 @@ public class EasyVideoView {
                     break;
                 case R.id.play_icon:
                 case R.id.app_video_play: {
-                    // 视频播放和暂停
+                    // 视频播放和暂停（视频播放暂停按钮）
                     if (videoView.isPlaying()) {
                         if (isLive) {
                             videoView.stopPlayback();
@@ -268,10 +268,10 @@ public class EasyVideoView {
                         startPlay();
                         if (videoView.isPlaying()) {
                             // ijkplayer内部的监听没有回调，只能手动修改状态
-                            status = PlayStateParams.STATE_PREPARING;
-                            hideStatusUI();
+                            status = PlayStateParams.STATE_PLAYING;
                         }
                     }
+
                     updatePausePlay();
                 }
                 break;
@@ -861,41 +861,6 @@ public class EasyVideoView {
     }
 
     /**
-     * 开始播放
-     */
-    public EasyVideoView startPlay() {
-        if (isLive) {
-            videoView.setVideoPath(currentUrl);
-            videoView.seekTo(0);
-        } else {
-            if (isHasSwitchStream || status == PlayStateParams.STATE_ERROR) {
-                //换源之后声音可播，画面卡住，主要是渲染问题，目前只是提供了软解方式，后期提供设置方式
-                videoView.setRender(videoView.RENDER_TEXTURE_VIEW);
-                videoView.setVideoPath(currentUrl);
-                videoView.seekTo(currentPosition);
-                isHasSwitchStream = false;
-            }
-        }
-        hideStatusUI();
-        if (isGNetWork && (NetworkUtils.getNetworkType(mContext) == 4 || NetworkUtils.getNetworkType(mContext) == 5 || NetworkUtils.getNetworkType(mContext) == 6)) {
-            query.id(R.id.app_video_netTie).visible();
-        } else {
-            if (isCharge && maxPlaytime < getCurrentPosition()) {
-                query.id(R.id.app_video_freeTie).visible();
-
-            } else {
-                if (playerSupport) {
-                    query.id(R.id.app_video_loading).visible();
-                    videoView.start();
-                } else {
-                    showStatus(mActivity.getResources().getString(R.string.not_support));
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
      * 设置视频名称
      */
     public EasyVideoView setTitle(String title) {
@@ -922,12 +887,52 @@ public class EasyVideoView {
     }
 
     /**
+     * 开始播放
+     * 状态：开始播放、暂停重播放
+     */
+    public EasyVideoView startPlay() {
+        if (isLive) {
+            videoView.setVideoPath(currentUrl);
+            videoView.seekTo(0);
+        } else {
+            if (isHasSwitchStream || status == PlayStateParams.STATE_ERROR) {
+                // 换源之后声音可播，画面卡住，主要是渲染问题，目前只是提供了软解方式，后期提供设置方式
+                videoView.setRender(videoView.RENDER_TEXTURE_VIEW);
+                videoView.setVideoPath(currentUrl);
+                videoView.seekTo(currentPosition);
+                isHasSwitchStream = false;
+            }
+        }
+
+        hideStatusUI();
+
+        if (isGNetWork && (NetworkUtils.getNetworkType(mContext) == 4 || NetworkUtils.getNetworkType(mContext) == 5 || NetworkUtils.getNetworkType(mContext) == 6)) {
+            query.id(R.id.app_video_netTie).visible();
+        } else {
+            if (isCharge && maxPlaytime < getCurrentPosition()) {
+                query.id(R.id.app_video_freeTie).visible();
+            } else {
+                if (playerSupport) {
+                    query.id(R.id.app_video_loading).visible();
+                    videoView.start();
+                } else {
+                    showStatus(mActivity.getResources().getString(R.string.not_support));
+                }
+            }
+        }
+
+        return this;
+    }
+
+    /**
      * 暂停播放
      */
     public EasyVideoView pausePlay() {
         status = PlayStateParams.STATE_PAUSED;
+
         getCurrentPosition();
         videoView.pause();
+
         return this;
     }
 
@@ -958,9 +963,10 @@ public class EasyVideoView {
         if (!isLive) {
             currentPosition = videoView.getCurrentPosition();
         } else {
-            /**直播*/
+            // 直播
             currentPosition = -1;
         }
+
         return currentPosition;
     }
 
@@ -1038,6 +1044,7 @@ public class EasyVideoView {
         } else {
             isLive = false;
         }
+
         return isLive;
     }
 
@@ -1276,7 +1283,7 @@ public class EasyVideoView {
      */
     public EasyVideoView toggleFullScreen() {
         int screenOrientation = getScreenOrientation();
-        Log.d(TAG, "toggleFullScreen screenOrientation: "+screenOrientation);
+        Log.d(TAG, "toggleFullScreen screenOrientation: " + screenOrientation);
 
         if (screenOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -1293,7 +1300,7 @@ public class EasyVideoView {
      */
     private void updateFullScreenButton() {
         int screenOrientation = getScreenOrientation();
-        Log.d(TAG, "updateFullScreenButton screenOrientation: "+screenOrientation);
+        Log.d(TAG, "updateFullScreenButton screenOrientation: " + screenOrientation);
 
         if (screenOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             iv_fullscreen.setImageResource(R.drawable.simple_player_icon_fullscreen_shrink);
@@ -1597,14 +1604,33 @@ public class EasyVideoView {
      */
     private void hideStatusUI() {
         iv_player.setVisibility(View.GONE);
+
         query.id(R.id.simple_player_settings_container).gone();
         query.id(R.id.simple_player_select_stream_container).gone();
         query.id(R.id.app_video_replay).gone();
         query.id(R.id.app_video_netTie).gone();
         query.id(R.id.app_video_freeTie).gone();
         query.id(R.id.app_video_loading).gone();
+
         if (onControlPanelVisibilityChangeListener != null) {
             onControlPanelVisibilityChangeListener.change(false);
+        }
+    }
+
+    /**
+     * 更新播放、暂停和停止按钮
+     */
+    private void updatePausePlay() {
+        if (videoView.isPlaying()) {
+            if (isLive) {
+                iv_bar_player.setImageResource(R.drawable.simple_player_stop_white_24dp);
+            } else {
+                iv_bar_player.setImageResource(R.drawable.simple_player_icon_media_pause);
+                iv_player.setImageResource(R.drawable.simple_player_center_pause);
+            }
+        } else {
+            iv_bar_player.setImageResource(R.drawable.simple_player_arrow_white_24dp);
+            iv_player.setImageResource(R.drawable.simple_player_center_play);
         }
     }
 
@@ -1716,24 +1742,6 @@ public class EasyVideoView {
             showSize = Long.toString(fileSize / (1024 * 1024)) + "MB/s";
         }
         return showSize;
-    }
-
-
-    /**
-     * 更新播放、暂停和停止按钮
-     */
-    private void updatePausePlay() {
-        if (videoView.isPlaying()) {
-            if (isLive) {
-                iv_bar_player.setImageResource(R.drawable.simple_player_stop_white_24dp);
-            } else {
-                iv_bar_player.setImageResource(R.drawable.simple_player_icon_media_pause);
-                iv_player.setImageResource(R.drawable.simple_player_center_pause);
-            }
-        } else {
-            iv_bar_player.setImageResource(R.drawable.simple_player_arrow_white_24dp);
-            iv_player.setImageResource(R.drawable.simple_player_center_play);
-        }
     }
 
     /**
