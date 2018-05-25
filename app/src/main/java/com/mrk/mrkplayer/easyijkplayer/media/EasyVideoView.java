@@ -252,7 +252,7 @@ public class EasyVideoView {
                     setPlayerRotation();
                     break;
                 case R.id.app_video_fullscreen:
-                    // 视频全屏切换
+                    // 视频全屏切换（视频全屏按钮）
                     toggleFullScreen();
                     break;
                 case R.id.play_icon:
@@ -1275,13 +1275,31 @@ public class EasyVideoView {
      * 全屏切换
      */
     public EasyVideoView toggleFullScreen() {
-        if (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+        int screenOrientation = getScreenOrientation();
+        Log.d(TAG, "toggleFullScreen screenOrientation: "+screenOrientation);
+
+        if (screenOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
+
         updateFullScreenButton();
         return this;
+    }
+
+    /**
+     * 更新全屏和半屏按钮
+     */
+    private void updateFullScreenButton() {
+        int screenOrientation = getScreenOrientation();
+        Log.d(TAG, "updateFullScreenButton screenOrientation: "+screenOrientation);
+
+        if (screenOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            iv_fullscreen.setImageResource(R.drawable.simple_player_icon_fullscreen_shrink);
+        } else {
+            iv_fullscreen.setImageResource(R.drawable.simple_player_icon_fullscreen_stretch);
+        }
     }
 
     /**
@@ -1715,17 +1733,6 @@ public class EasyVideoView {
         } else {
             iv_bar_player.setImageResource(R.drawable.simple_player_arrow_white_24dp);
             iv_player.setImageResource(R.drawable.simple_player_center_play);
-        }
-    }
-
-    /**
-     * 更新全屏和半屏按钮
-     */
-    private void updateFullScreenButton() {
-        if (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            iv_fullscreen.setImageResource(R.drawable.simple_player_icon_fullscreen_shrink);
-        } else {
-            iv_fullscreen.setImageResource(R.drawable.simple_player_icon_fullscreen_stretch);
         }
     }
 
