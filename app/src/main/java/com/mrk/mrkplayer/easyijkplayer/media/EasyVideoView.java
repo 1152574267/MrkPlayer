@@ -276,15 +276,9 @@ public class EasyVideoView {
                 }
                 break;
                 case R.id.app_video_finish: {
-                    // 返回
-                    if (!isOnlyFullScreen && !isPortrait) {
-                        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    } else {
-                        if (mPlayerBack != null) {
-                            mPlayerBack.onPlayerBack();
-                        } else {
-                            mActivity.finish();
-                        }
+                    // 返回(视频返回按钮)
+                    if (mPlayerBack != null) {
+                        mPlayerBack.onPlayerBack();
                     }
                 }
                 break;
@@ -1649,21 +1643,22 @@ public class EasyVideoView {
      * 显示分辨率列表
      */
     private void showStreamSelectView() {
-        this.streamSelectView.setVisibility(View.VISIBLE);
+        streamSelectView.setVisibility(View.VISIBLE);
+
         if (!isForbidHideControlPanl) {
             ll_topbar.setVisibility(View.GONE);
             ll_bottombar.setVisibility(View.GONE);
         }
-        this.streamSelectListView.setItemsCanFocus(true);
+
+        streamSelectListView.setItemsCanFocus(true);
     }
 
     /**
      * 隐藏分辨率列表
      */
     private void hideStreamSelectView() {
-        this.streamSelectView.setVisibility(View.GONE);
+        streamSelectView.setVisibility(View.GONE);
     }
-
 
     /**
      * 手势结束
