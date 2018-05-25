@@ -703,19 +703,18 @@ public class EasyVideoView {
      * ==========================================Activity生命周期方法回调=============================
      */
 
-    /**
-     * ==========================================对外的方法=============================
-     */
-
+    //==========================================对外的方法=============================
 
     /**
      * 显示缩略图
      */
     public EasyVideoView showThumbnail(OnShowThumbnailListener onShowThumbnailListener) {
         this.mOnShowThumbnailListener = onShowThumbnailListener;
+
         if (mOnShowThumbnailListener != null && iv_trumb != null) {
             mOnShowThumbnailListener.onShowThumbnail(iv_trumb);
         }
+
         return this;
     }
 
@@ -724,6 +723,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setOnInfoListener(IMediaPlayer.OnInfoListener onInfoListener) {
         this.onInfoListener = onInfoListener;
+
         return this;
     }
 
@@ -732,6 +732,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setPlayerBackListener(OnPlayerBackListener listener) {
         this.mPlayerBack = listener;
+
         return this;
     }
 
@@ -740,6 +741,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setOnControlPanelVisibilityChangListenter(OnControlPanelVisibilityChangeListener listener) {
         this.onControlPanelVisibilityChangeListener = listener;
+
         return this;
     }
 
@@ -750,6 +752,7 @@ public class EasyVideoView {
         if (videoView != null) {
             videoView.toggleAspectRatio();
         }
+
         return this;
     }
 
@@ -759,6 +762,7 @@ public class EasyVideoView {
     public EasyVideoView setScaleType(int showType) {
         currentShowType = showType;
         videoView.setAspectRatio(currentShowType);
+
         return this;
     }
 
@@ -773,8 +777,8 @@ public class EasyVideoView {
         } else if (rotation == 270) {
             rotation = 0;
         }
-
         setPlayerRotation(rotation);
+
         return this;
     }
 
@@ -797,10 +801,12 @@ public class EasyVideoView {
      */
     public EasyVideoView setPlaySource(List<VideoijkBean> list) {
         listVideos.clear();
+
         if (list != null && list.size() > 0) {
             listVideos.addAll(list);
             switchStream(0);
         }
+
         return this;
     }
 
@@ -810,10 +816,12 @@ public class EasyVideoView {
      */
     public EasyVideoView setPlaySource(VideoijkBean videoijkBean) {
         listVideos.clear();
+
         if (videoijkBean != null) {
             listVideos.add(videoijkBean);
             switchStream(0);
         }
+
         return this;
     }
 
@@ -827,6 +835,7 @@ public class EasyVideoView {
         mVideoijkBean.setStream(stream);
         mVideoijkBean.setUrl(url);
         setPlaySource(mVideoijkBean);
+
         return this;
     }
 
@@ -836,15 +845,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setPlaySource(String url) {
         setPlaySource("标清", url);
-        return this;
-    }
 
-    /**
-     * 自动播放
-     */
-    public EasyVideoView autoPlay(String path) {
-        setPlaySource(path);
-        startPlay();
         return this;
     }
 
@@ -853,6 +854,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setTitle(String title) {
         query.id(R.id.app_video_title).text(title);
+
         return this;
     }
 
@@ -864,13 +866,26 @@ public class EasyVideoView {
             tv_steam.setText(listVideos.get(index).getStream());
             currentUrl = listVideos.get(index).getUrl();
             listVideos.get(index).setSelect(true);
+
             isLive();
+
             if (videoView.isPlaying()) {
                 getCurrentPosition();
                 videoView.release(false);
             }
             isHasSwitchStream = true;
         }
+
+        return this;
+    }
+
+    /**
+     * 自动播放
+     */
+    public EasyVideoView autoPlay(String path) {
+        setPlaySource(path);
+        startPlay();
+
         return this;
     }
 
@@ -929,10 +944,12 @@ public class EasyVideoView {
      */
     public EasyVideoView stopPlay() {
         videoView.stopPlayback();
+
         isErrorStop = true;
         if (mHandler != null) {
             mHandler.removeMessages(MESSAGE_RESTART_PLAY);
         }
+
         return this;
     }
 
@@ -941,6 +958,7 @@ public class EasyVideoView {
      */
     public EasyVideoView seekTo(int playtime) {
         videoView.seekTo(playtime);
+
         return this;
     }
 
@@ -963,6 +981,7 @@ public class EasyVideoView {
      */
     public long getDuration() {
         duration = videoView.getDuration();
+
         return duration;
     }
 
@@ -974,6 +993,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setNetWorkTypeTie(boolean isGNetWork) {
         this.isGNetWork = isGNetWork;
+
         return this;
     }
 
@@ -986,21 +1006,23 @@ public class EasyVideoView {
     public EasyVideoView setChargeTie(boolean isCharge, int maxPlaytime) {
         this.isCharge = isCharge;
         this.maxPlaytime = maxPlaytime * 1000;
+
         return this;
     }
-
 
     /**
      * 是否仅仅为全屏
      */
     public EasyVideoView setOnlyFullScreen(boolean isFull) {
         this.isOnlyFullScreen = isFull;
+
         tryFullScreen(isOnlyFullScreen);
         if (isOnlyFullScreen) {
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
+
         return this;
     }
 
@@ -1009,6 +1031,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setForbidDoulbeUp(boolean flag) {
         this.isForbidDoulbeUp = flag;
+
         return this;
     }
 
@@ -1017,6 +1040,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setForbidHideControlPanl(boolean flag) {
         this.isForbidHideControlPanl = flag;
+
         return this;
     }
 
@@ -1041,6 +1065,7 @@ public class EasyVideoView {
      */
     public EasyVideoView forbidTouch(boolean forbidTouch) {
         this.isForbidTouch = forbidTouch;
+
         return this;
     }
 
@@ -1051,6 +1076,7 @@ public class EasyVideoView {
         if (query != null) {
             hideAll();
         }
+
         return this;
     }
 
@@ -1115,6 +1141,7 @@ public class EasyVideoView {
      */
     public EasyVideoView hideBack(boolean isHide) {
         iv_back.setVisibility(isHide ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1123,6 +1150,7 @@ public class EasyVideoView {
      */
     public EasyVideoView hideMenu(boolean isHide) {
         iv_menu.setVisibility(isHide ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1131,6 +1159,7 @@ public class EasyVideoView {
      */
     public EasyVideoView hideSteam(boolean isHide) {
         tv_steam.setVisibility(isHide ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1139,6 +1168,7 @@ public class EasyVideoView {
      */
     public EasyVideoView hideRotation(boolean isHide) {
         iv_rotation.setVisibility(isHide ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1147,6 +1177,7 @@ public class EasyVideoView {
      */
     public EasyVideoView hideFullscreen(boolean isHide) {
         iv_fullscreen.setVisibility(isHide ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1156,6 +1187,7 @@ public class EasyVideoView {
     public EasyVideoView hideCenterPlayer(boolean isHide) {
         isHideCenterPlayer = isHide;
         iv_player.setVisibility(isHideCenterPlayer ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1165,6 +1197,7 @@ public class EasyVideoView {
     public EasyVideoView hideHideTopBar(boolean isHide) {
         isHideTopBar = isHide;
         ll_topbar.setVisibility(isHideTopBar ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1174,6 +1207,7 @@ public class EasyVideoView {
     public EasyVideoView hideBottonBar(boolean isHide) {
         isHideBottonBar = isHide;
         ll_bottombar.setVisibility(isHideBottonBar ? View.GONE : View.VISIBLE);
+
         return this;
     }
 
@@ -1183,6 +1217,7 @@ public class EasyVideoView {
     public EasyVideoView hideControlPanl(boolean isHide) {
         hideBottonBar(isHide);
         hideHideTopBar(isHide);
+
         return this;
     }
 
@@ -1192,6 +1227,7 @@ public class EasyVideoView {
     public EasyVideoView setAutoReConnect(boolean isAuto, int connectTime) {
         this.isAutoReConnect = isAuto;
         this.autoConnectTime = connectTime;
+
         return this;
     }
 
@@ -1263,6 +1299,7 @@ public class EasyVideoView {
             }
             mAutoPlayRunnable.stop();
         }
+
         return this;
     }
 
@@ -1308,6 +1345,7 @@ public class EasyVideoView {
             ll_topbar.setVisibility(View.GONE);
             ll_bottombar.setVisibility(View.GONE);
         }
+
         return this;
     }
 
@@ -1316,6 +1354,7 @@ public class EasyVideoView {
      */
     public EasyVideoView toggleProcessDurationOrientation() {
         setProcessDurationOrientation(PlayStateParams.PROCESS_PORTRAIT);
+
         return this;
     }
 
@@ -1324,6 +1363,7 @@ public class EasyVideoView {
      */
     public EasyVideoView setShowSpeed(boolean isShow) {
         tv_speed.setVisibility(isShow ? View.VISIBLE : View.GONE);
+
         return this;
     }
 
@@ -1347,9 +1387,9 @@ public class EasyVideoView {
             query.id(R.id.app_video_center).visible();
             query.id(R.id.app_video_lift).gone();
         }
+
         return this;
     }
-
 
     /**
      * 获取界面方向
@@ -1413,14 +1453,10 @@ public class EasyVideoView {
         return orientation;
     }
 
-    /**
-     * ==========================================对外的方法=============================
-     */
+    //==========================================对外的方法=============================
 
-    /**
-     * ==========================================内部方法=============================
-     */
 
+    //==========================================内部方法=============================
 
     /**
      * 状态改变同步UI
@@ -1547,7 +1583,6 @@ public class EasyVideoView {
         }
     }
 
-
     /**
      * 设置界面方向
      */
@@ -1566,7 +1601,6 @@ public class EasyVideoView {
             }
             toggleProcessDurationOrientation();
         }
-
     }
 
     /**
@@ -1585,7 +1619,6 @@ public class EasyVideoView {
         }
         setFullScreen(fullScreen);
     }
-
 
     /**
      * 隐藏状态界面
@@ -1672,7 +1705,6 @@ public class EasyVideoView {
         if (mAutoPlayRunnable != null) {
             mAutoPlayRunnable.start();
         }
-
     }
 
     /**
@@ -1822,14 +1854,9 @@ public class EasyVideoView {
         mActivity.getWindow().setAttributes(lpa);
     }
 
-    /**
-     * ==========================================内部方法=============================
-     */
+    //==========================================内部方法=============================
 
-
-    /**
-     * ==========================================内部类=============================
-     */
+    //==========================================内部类=============================
 
     /**
      * 收起控制面板轮询，默认5秒无操作，收起控制面板，
@@ -1959,8 +1986,6 @@ public class EasyVideoView {
             return true;
         }
     }
-    /**
-     * ==========================================内部方法=============================
-     */
 
+    //==========================================内部方法=============================
 }
