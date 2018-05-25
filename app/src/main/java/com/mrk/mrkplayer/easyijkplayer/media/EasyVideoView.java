@@ -440,61 +440,22 @@ public class EasyVideoView {
      * 新的调用方法，适用非Activity中使用PlayerView，例如fragment、holder中使用
      */
     public EasyVideoView(Activity activity, View rootView) {
-        this.mActivity = activity;
-        this.mContext = activity;
-        try {
-            IjkMediaPlayer.loadLibrariesOnce(null);
-            IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-            playerSupport = true;
-        } catch (Throwable e) {
-            Log.e(TAG, "loadLibraries error", e);
-        }
-        screenWidthPixels = mContext.getResources().getDisplayMetrics().widthPixels;
-        audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-        mMaxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        mActivity = activity;
+        mContext = activity;
+
         if (rootView == null) {
             query = new LayoutQuery(mActivity);
+
             rl_box = mActivity.findViewById(R.id.app_video_box);
             videoView = (IjkVideoView) mActivity.findViewById(R.id.video_view);
             settingsContainer = mActivity.findViewById(R.id.simple_player_settings_container);
-            settingsContainer.setVisibility(View.GONE);
+            // 声音进度
             volumeControllerContainer = mActivity.findViewById(R.id.simple_player_volume_controller_container);
-            /**声音进度*/
             volumeController = (SeekBar) mActivity.findViewById(R.id.simple_player_volume_controller);
-            volumeController.setMax(100);
-            volumeController.setOnSeekBarChangeListener(this.onVolumeControllerChangeListener);
-            /**亮度进度*/
+            // 亮度进度
             brightnessControllerContainer = mActivity.findViewById(R.id.simple_player_brightness_controller_container);
             brightnessController = (SeekBar) mActivity.findViewById(R.id.simple_player_brightness_controller);
-            brightnessController.setMax(100);
-        } else {
-            query = new LayoutQuery(mActivity, rootView);
-            rl_box = rootView.findViewById(R.id.app_video_box);
-            videoView = (IjkVideoView) rootView.findViewById(R.id.video_view);
-            settingsContainer = rootView.findViewById(R.id.simple_player_settings_container);
-            settingsContainer.setVisibility(View.GONE);
-            volumeControllerContainer = rootView.findViewById(R.id.simple_player_volume_controller_container);
-            /**声音进度*/
-            volumeController = (SeekBar) rootView.findViewById(R.id.simple_player_volume_controller);
-            volumeController.setMax(100);
-            volumeController.setOnSeekBarChangeListener(this.onVolumeControllerChangeListener);
-            /**亮度进度*/
-            brightnessControllerContainer = rootView.findViewById(R.id.simple_player_brightness_controller_container);
-            brightnessController = (SeekBar) rootView.findViewById(R.id.simple_player_brightness_controller);
-            brightnessController.setMax(100);
-        }
 
-        try {
-            int e = Settings.System.getInt(this.mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-            float progress = 1.0F * (float) e / 255.0F;
-            WindowManager.LayoutParams layout = this.mActivity.getWindow().getAttributes();
-            layout.screenBrightness = progress;
-            mActivity.getWindow().setAttributes(layout);
-        } catch (Settings.SettingNotFoundException var7) {
-            var7.printStackTrace();
-        }
-        brightnessController.setOnSeekBarChangeListener(this.onBrightnessControllerChangeListener);
-        if (rootView == null) {
             streamSelectView = (LinearLayout) mActivity.findViewById(R.id.simple_player_select_stream_container);
             streamSelectListView = (ListView) mActivity.findViewById(R.id.simple_player_select_streams_list);
             ll_topbar = mActivity.findViewById(R.id.app_video_top_box);
@@ -510,6 +471,18 @@ public class EasyVideoView {
             tv_speed = (TextView) mActivity.findViewById(R.id.app_video_speed);
             seekBar = (SeekBar) mActivity.findViewById(R.id.app_video_seekBar);
         } else {
+            query = new LayoutQuery(mActivity, rootView);
+
+            rl_box = rootView.findViewById(R.id.app_video_box);
+            videoView = (IjkVideoView) rootView.findViewById(R.id.video_view);
+            settingsContainer = rootView.findViewById(R.id.simple_player_settings_container);
+            // 声音进度
+            volumeControllerContainer = rootView.findViewById(R.id.simple_player_volume_controller_container);
+            volumeController = (SeekBar) rootView.findViewById(R.id.simple_player_volume_controller);
+            // 亮度进度
+            brightnessControllerContainer = rootView.findViewById(R.id.simple_player_brightness_controller_container);
+            brightnessController = (SeekBar) rootView.findViewById(R.id.simple_player_brightness_controller);
+
             streamSelectView = (LinearLayout) rootView.findViewById(R.id.simple_player_select_stream_container);
             streamSelectListView = (ListView) rootView.findViewById(R.id.simple_player_select_streams_list);
             ll_topbar = rootView.findViewById(R.id.app_video_top_box);
@@ -526,7 +499,40 @@ public class EasyVideoView {
             seekBar = (SeekBar) rootView.findViewById(R.id.app_video_seekBar);
         }
 
+        // 初始化数据
+        audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        mMaxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+
+        IjkMediaPlayer.loadLibrariesOnce(null);
+        IjkMediaPlayer.native_profileBegin("libijkplayer.so");
+        playerSupport = true;
+        if (!playerSupport) {
+            showStatus(mActivity.getResources().getString(R.string.not_support));
+        } else {
+            query.id(R.id.ll_bg).visible();
+        }
+
+        isPortrait = (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        screenWidthPixels = mContext.getResources().getDisplayMetrics().widthPixels;
+        initHeight = rl_box.getLayoutParams().height;
+
+        settingsContainer.setVisibility(View.GONE);
+        volumeController.setMax(100);
+        brightnessController.setMax(100);
         seekBar.setMax(1000);
+        try {
+            int e = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            float progress = 100f * (float) e / 255.0f;
+            WindowManager.LayoutParams layoutParams = mActivity.getWindow().getAttributes();
+            layoutParams.screenBrightness = progress;
+            mActivity.getWindow().setAttributes(layoutParams);
+        } catch (Settings.SettingNotFoundException var7) {
+            var7.printStackTrace();
+        }
+
+        // 设置视频事件监听
+        volumeController.setOnSeekBarChangeListener(this.onVolumeControllerChangeListener);
+        brightnessController.setOnSeekBarChangeListener(onBrightnessControllerChangeListener);
         seekBar.setOnSeekBarChangeListener(mSeekListener);
         iv_bar_player.setOnClickListener(onClickListener);
         iv_player.setOnClickListener(onClickListener);
@@ -538,15 +544,18 @@ public class EasyVideoView {
         query.id(R.id.app_video_netTie_icon).clicked(onClickListener);
         query.id(R.id.app_video_replay_icon).clicked(onClickListener);
         videoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+
             @Override
             public boolean onInfo(IMediaPlayer mp, int what, int extra) {
                 if (what == PlayStateParams.MEDIA_INFO_NETWORK_BANDWIDTH || what == PlayStateParams.MEDIA_INFO_BUFFERING_BYTES_UPDATE) {
-                    Log.e("", "dou361.====extra=======" + extra);
+                    Log.e(TAG, "videoView setOnInfoListener onInfo: " + extra);
                     if (tv_speed != null) {
                         tv_speed.setText(getFormatSize(extra));
                     }
                 }
+
                 statusChange(what);
+
                 if (onInfoListener != null) {
                     onInfoListener.onInfo(mp, what, extra);
                 }
@@ -554,6 +563,7 @@ public class EasyVideoView {
                     query.id(R.id.app_video_freeTie).visible();
                     pausePlay();
                 }
+
                 return true;
             }
         });
@@ -586,6 +596,7 @@ public class EasyVideoView {
         final GestureDetector gestureDetector = new GestureDetector(mContext, new PlayerGestureListener());
         rl_box.setClickable(true);
         rl_box.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
@@ -594,21 +605,22 @@ public class EasyVideoView {
                             mAutoPlayRunnable.stop();
                         }
                         break;
-                }
-                if (gestureDetector.onTouchEvent(motionEvent))
-                    return true;
-                // 处理手势结束
-                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                    // 处理手势结束
                     case MotionEvent.ACTION_UP:
                         endGesture();
                         break;
                 }
+
+                if (gestureDetector.onTouchEvent(motionEvent)) {
+                    return true;
+                }
+
                 return false;
             }
         });
 
-
         orientationEventListener = new OrientationEventListener(mActivity) {
+
             @Override
             public void onOrientationChanged(int orientation) {
                 if (orientation >= 0 && orientation <= 30 || orientation >= 330 || (orientation >= 150 && orientation <= 210)) {
@@ -628,14 +640,8 @@ public class EasyVideoView {
         if (isOnlyFullScreen) {
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        isPortrait = (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        initHeight = rl_box.getLayoutParams().height;
+
         hideAll();
-        if (!playerSupport) {
-            showStatus(mActivity.getResources().getString(R.string.not_support));
-        } else {
-            query.id(R.id.ll_bg).visible();
-        }
     }
 
     /**==========================================Activity生命周期方法回调=============================*/
@@ -1654,6 +1660,7 @@ public class EasyVideoView {
             ll_topbar.setVisibility(View.GONE);
             ll_bottombar.setVisibility(View.GONE);
         }
+
         hideStatusUI();
     }
 
