@@ -248,7 +248,7 @@ public class EasyVideoView {
                     showStreamSelectView();
                     break;
                 case R.id.ijk_iv_rotation:
-                    // 旋转视频方向
+                    // 旋转视频方向(视频旋转按钮)
                     setPlayerRotation();
                     break;
                 case R.id.app_video_fullscreen:
@@ -785,6 +785,7 @@ public class EasyVideoView {
         } else if (rotation == 270) {
             rotation = 0;
         }
+
         setPlayerRotation(rotation);
         return this;
     }
@@ -797,6 +798,7 @@ public class EasyVideoView {
             videoView.setPlayerRotation(rotation);
             videoView.setAspectRatio(currentShowType);
         }
+
         return this;
     }
 

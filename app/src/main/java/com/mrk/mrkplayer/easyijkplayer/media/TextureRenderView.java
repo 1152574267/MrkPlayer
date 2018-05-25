@@ -93,6 +93,8 @@ public class TextureRenderView extends TextureView implements IRenderView {
 
     @Override
     public void setVideoRotation(int degree) {
+        Log.d(TAG, "TextureView rotation " + degree + "!\n");
+
         mMeasureHelper.setVideoRotation(degree);
         setRotation(degree);
     }

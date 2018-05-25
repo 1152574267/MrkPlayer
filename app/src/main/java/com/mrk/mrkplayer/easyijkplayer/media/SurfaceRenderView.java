@@ -23,6 +23,8 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.ISurfaceTextureHolder;
 
 public class SurfaceRenderView extends SurfaceView implements IRenderView {
+    private static final String TAG = SurfaceRenderView.class.getSimpleName();
+
     private MeasureHelper mMeasureHelper;
 
     public SurfaceRenderView(Context context) {
@@ -85,7 +87,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
 
     @Override
     public void setVideoRotation(int degree) {
-        Log.e("", "SurfaceView doesn't support rotation (" + degree + ")!\n");
+        Log.d(TAG, "SurfaceView doesn't support rotation " + degree + "!\n");
     }
 
     @Override
