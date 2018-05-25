@@ -1921,10 +1921,11 @@ public class EasyVideoView {
          */
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            /**视频视窗双击事件*/
+            // 视频视窗双击事件
             if (!isForbidTouch && !isOnlyFullScreen && !isForbidDoulbeUp) {
                 toggleFullScreen();
             }
+
             return true;
         }
 

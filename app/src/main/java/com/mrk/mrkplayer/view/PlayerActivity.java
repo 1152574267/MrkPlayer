@@ -1,11 +1,9 @@
 package com.mrk.mrkplayer.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,18 +15,15 @@ import com.mrk.mrkplayer.easyijkplayer.media.PlayStateParams;
 
 public class PlayerActivity extends Activity {
     private EasyVideoView player;
-    private Context mContext;
-    private View rootView;
 
     private String mVideoPath;
-    public String url;
     private String mVideoUriStr;
+    public String url;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rootView = getLayoutInflater().from(this).inflate(R.layout.simple_player_view_player, null);
-        setContentView(rootView);
+        setContentView(R.layout.simple_player_view_player);
 
         url = null;
         mVideoPath = null;
@@ -42,11 +37,13 @@ public class PlayerActivity extends Activity {
             url = mVideoUriStr;
         }
 
-        player = new EasyVideoView(this, rootView)
-                .setTitle(" ")
+        player = new EasyVideoView(this)
                 .setScaleType(PlayStateParams.fitparent)
                 .forbidTouch(false)
+                .setForbidDoulbeUp(false)
                 .hideMenu(true)
+                .hideSteam(true)
+                .setProcessDurationOrientation(PlayStateParams.PROCESS_LANDSCAPE)
                 .showThumbnail(new OnShowThumbnailListener() {
 
                     @Override
