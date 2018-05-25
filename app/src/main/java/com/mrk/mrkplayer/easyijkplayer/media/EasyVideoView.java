@@ -238,58 +238,74 @@ public class EasyVideoView {
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.app_video_menu) {
-                /**菜单*/
-                showMenu();
-            } else if (v.getId() == R.id.app_video_stream) {
-                /**选择分辨率*/
-                showStreamSelectView();
-            } else if (v.getId() == R.id.ijk_iv_rotation) {
-                /**旋转视频方向*/
-                setPlayerRotation();
-            } else if (v.getId() == R.id.app_video_fullscreen) {
-                /**视频全屏切换*/
-                toggleFullScreen();
-            } else if (v.getId() == R.id.app_video_play || v.getId() == R.id.play_icon) {
-                /**视频播放和暂停*/
-                if (videoView.isPlaying()) {
-                    if (isLive) {
-                        videoView.stopPlayback();
-                    } else {
-                        pausePlay();
-                    }
-                } else {
-                    startPlay();
+            switch (v.getId()) {
+                case R.id.app_video_menu:
+                    // 菜单
+                    showMenu();
+                    break;
+                case R.id.app_video_stream:
+                    // 选择分辨率
+                    showStreamSelectView();
+                    break;
+                case R.id.ijk_iv_rotation:
+                    // 旋转视频方向
+                    setPlayerRotation();
+                    break;
+                case R.id.app_video_fullscreen:
+                    // 视频全屏切换
+                    toggleFullScreen();
+                    break;
+                case R.id.play_icon:
+                case R.id.app_video_play: {
+                    // 视频播放和暂停
                     if (videoView.isPlaying()) {
-                        /**ijkplayer内部的监听没有回调，只能手动修改状态*/
-                        status = PlayStateParams.STATE_PREPARING;
-                        hideStatusUI();
-                    }
-                }
-                updatePausePlay();
-            } else if (v.getId() == R.id.app_video_finish) {
-                /**返回*/
-                if (!isOnlyFullScreen && !isPortrait) {
-                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                } else {
-                    if (mPlayerBack != null) {
-                        mPlayerBack.onPlayerBack();
+                        if (isLive) {
+                            videoView.stopPlayback();
+                        } else {
+                            pausePlay();
+                        }
                     } else {
-                        mActivity.finish();
+                        startPlay();
+                        if (videoView.isPlaying()) {
+                            // ijkplayer内部的监听没有回调，只能手动修改状态
+                            status = PlayStateParams.STATE_PREPARING;
+                            hideStatusUI();
+                        }
+                    }
+                    updatePausePlay();
+                }
+                break;
+                case R.id.app_video_finish: {
+                    // 返回
+                    if (!isOnlyFullScreen && !isPortrait) {
+                        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    } else {
+                        if (mPlayerBack != null) {
+                            mPlayerBack.onPlayerBack();
+                        } else {
+                            mActivity.finish();
+                        }
                     }
                 }
-            } else if (v.getId() == R.id.app_video_netTie_icon) {
-                /**使用移动网络提示继续播放*/
-                isGNetWork = false;
-                hideStatusUI();
-                startPlay();
-                updatePausePlay();
-            } else if (v.getId() == R.id.app_video_replay_icon) {
-                /**重新播放*/
-                status = PlayStateParams.STATE_ERROR;
-                hideStatusUI();
-                startPlay();
-                updatePausePlay();
+                break;
+                case R.id.app_video_netTie_icon: {
+                    // 使用移动网络提示继续播放
+                    isGNetWork = false;
+                    hideStatusUI();
+                    startPlay();
+                    updatePausePlay();
+                }
+                break;
+                case R.id.app_video_replay_icon: {
+                    // 重新播放
+                    status = PlayStateParams.STATE_ERROR;
+                    hideStatusUI();
+                    startPlay();
+                    updatePausePlay();
+                }
+                break;
+                default:
+                    break;
             }
         }
     };

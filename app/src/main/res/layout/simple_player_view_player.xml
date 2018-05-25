@@ -3,9 +3,7 @@
     android:id="@+id/app_video_box"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:orientation="vertical">
-
+    android:background="@android:color/black">
 
     <com.mrk.mrkplayer.easyijkplayer.media.IjkVideoView
         android:id="@+id/video_view"
@@ -19,7 +17,7 @@
         android:background="@android:color/black"
         android:orientation="vertical">
 
-        <!-- 封面显示-->
+        <!-- 封面显示 -->
         <ImageView
             android:id="@+id/iv_trumb"
             android:layout_width="match_parent"
@@ -28,7 +26,7 @@
             android:visibility="visible" />
     </LinearLayout>
 
-    <!--重新播放-->
+    <!-- 重新播放 -->
     <LinearLayout
         android:id="@+id/app_video_replay"
         android:layout_width="match_parent"
@@ -37,7 +35,8 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
-        <!-- 播放状态-->
+
+        <!-- 播放状态 -->
         <TextView
             android:id="@+id/app_video_status_text"
             android:layout_width="wrap_content"
@@ -53,7 +52,8 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/simple_player_circle_outline_white_36dp" />
     </LinearLayout>
-    <!-- 网络提示-->
+
+    <!-- 网络提示 -->
     <LinearLayout
         android:id="@+id/app_video_netTie"
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 
-    <!-- 最大试看时长提示-->
+    <!-- 最大试看时长提示 -->
     <LinearLayout
         android:id="@+id/app_video_freeTie"
         android:layout_width="match_parent"
@@ -116,7 +116,7 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 
-    <!--加载中-->
+    <!-- 加载中 -->
     <LinearLayout
         android:id="@+id/app_video_loading"
         android:layout_width="match_parent"
@@ -142,23 +142,24 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <!-- 中间触摸提示-->
+    <!-- 中间触摸提示 -->
     <include
         layout="@layout/simple_player_touch_gestures"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <!-- 顶部栏-->
+    <!-- 顶部栏 -->
     <include layout="@layout/simple_player_topbar" />
-    <!-- 底部栏-->
+
+    <!-- 底部栏 -->
     <include
         layout="@layout/simple_player_controlbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <!--声音亮度控制-->
+    <!-- 声音亮度控制 -->
     <LinearLayout
         android:id="@+id/simple_player_settings_container"
         android:layout_width="250dp"
@@ -222,7 +223,7 @@
     </LinearLayout>
 
 
-    <!--分辨率选择-->
+    <!-- 分辨率选择 -->
     <LinearLayout
         android:id="@+id/simple_player_select_stream_container"
         android:layout_width="150dp"
@@ -237,7 +238,6 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
     <ImageView
         android:id="@+id/play_icon"
