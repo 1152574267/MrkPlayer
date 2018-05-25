@@ -543,24 +543,28 @@ public class EasyVideoView {
                 return true;
             }
         });
-        this.streamSelectAdapter = new StreamSelectAdapter(mContext, listVideos);
-        this.streamSelectListView.setAdapter(this.streamSelectAdapter);
-        this.streamSelectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        streamSelectAdapter = new StreamSelectAdapter(mContext, listVideos);
+        streamSelectListView.setAdapter(streamSelectAdapter);
+        streamSelectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 hideStreamSelectView();
+
                 if (currentSelect == position) {
                     return;
                 }
+
                 currentSelect = position;
                 switchStream(position);
-                for (int i = 0; i < listVideos.size(); i++) {
+                for (int i = 0; i < streamSelectAdapter.getCount(); i++) {
                     if (i == position) {
-                        listVideos.get(i).setSelect(true);
+                        streamSelectAdapter.getItem(i).setSelect(true);
                     } else {
-                        listVideos.get(i).setSelect(false);
+                        streamSelectAdapter.getItem(i).setSelect(false);
                     }
                 }
-                streamSelectAdapter.notifyDataSetChanged();
+//                streamSelectAdapter.notifyDataSetChanged();
                 startPlay();
             }
         });
