@@ -311,7 +311,7 @@ public class EasyVideoView {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (!fromUser) {
-                /**不是用户拖动的，自动播放滑动的情况*/
+                // 不是用户拖动的，自动播放滑动的情况
                 return;
             } else {
                 long duration = getDuration();
@@ -351,65 +351,68 @@ public class EasyVideoView {
 
         /**开始拖动*/
         public void onStartTrackingTouch(SeekBar seekBar) {
+
         }
 
         /**停止拖动*/
         public void onStopTrackingTouch(SeekBar seekBar) {
-            brightness = -1;
+//            brightness = -1;
         }
     };
 
     public void setBrightness(int value) {
-        WindowManager.LayoutParams layout = this.mActivity.getWindow().getAttributes();
+        WindowManager.LayoutParams layoutParams = mActivity.getWindow().getAttributes();
         if (brightness < 0) {
-            brightness = mActivity.getWindow().getAttributes().screenBrightness;
+            brightness = layoutParams.screenBrightness;
             if (brightness <= 0.00f) {
                 brightness = 0.50f;
             } else if (brightness < 0.01f) {
                 brightness = 0.01f;
             }
         }
+
         if (value < 1) {
             value = 1;
         }
         if (value > 100) {
             value = 100;
         }
-        layout.screenBrightness = 1.0F * (float) value / 100.0F;
-        if (layout.screenBrightness > 1.0f) {
-            layout.screenBrightness = 1.0f;
-        } else if (layout.screenBrightness < 0.01f) {
-            layout.screenBrightness = 0.01f;
-        }
-        this.mActivity.getWindow().setAttributes(layout);
-    }
 
+        layoutParams.screenBrightness = 1.0f * (float) value / 100.0f;
+        if (layoutParams.screenBrightness > 1.0f) {
+            layoutParams.screenBrightness = 1.0f;
+        } else if (layoutParams.screenBrightness < 0.01f) {
+            layoutParams.screenBrightness = 0.01f;
+        }
+        mActivity.getWindow().setAttributes(layoutParams);
+    }
 
     // 声音进度条滑动监听
     private final SeekBar.OnSeekBarChangeListener onVolumeControllerChangeListener = new SeekBar.OnSeekBarChangeListener() {
 
         /**数值的改变*/
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
             int index = (int) (mMaxVolume * progress * 0.01);
-            if (index > mMaxVolume)
+            if (index > mMaxVolume) {
                 index = mMaxVolume;
-            else if (index < 0)
+            } else if (index < 0) {
                 index = 0;
+            }
+
             // 变更声音
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);
         }
 
         /**开始拖动*/
         public void onStartTrackingTouch(SeekBar seekBar) {
+
         }
 
         /**停止拖动*/
         public void onStopTrackingTouch(SeekBar seekBar) {
-            volume = -1;
+//            volume = -1;
         }
     };
-
 
     /**
      * ========================================视频的监听方法==============================================
