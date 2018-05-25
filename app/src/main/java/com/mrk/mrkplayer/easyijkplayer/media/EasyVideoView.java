@@ -644,88 +644,58 @@ public class EasyVideoView {
         hideAll();
     }
 
-    /**==========================================Activity生命周期方法回调=============================*/
     /**
-     * @Override protected void onPause() {
-     * super.onPause();
-     * if (player != null) {
-     * player.onPause();
-     * }
-     * }
+     * ==========================================Activity生命周期方法回调=============================
      */
     public EasyVideoView onPause() {
         bgState = (videoView.isPlaying() ? 0 : 1);
         getCurrentPosition();
         videoView.onPause();
+
         return this;
     }
 
-    /**
-     * @Override protected void onResume() {
-     * super.onResume();
-     * if (player != null) {
-     * player.onResume();
-     * }
-     * }
-     */
     public EasyVideoView onResume() {
         videoView.onResume();
+
         if (isLive) {
             videoView.seekTo(0);
         } else {
             videoView.seekTo(currentPosition);
         }
+
         if (bgState == 0) {
 
         } else {
             pausePlay();
         }
+
         return this;
     }
 
-    /**
-     * @Override protected void onDestroy() {
-     * super.onDestroy();
-     * if (player != null) {
-     * player.onDestroy();
-     * }
-     * }
-     */
     public EasyVideoView onDestroy() {
         orientationEventListener.disable();
+
         mHandler.removeMessages(MESSAGE_RESTART_PLAY);
         mHandler.removeMessages(MESSAGE_SEEK_NEW_POSITION);
         videoView.stopPlayback();
+
         return this;
     }
 
-    /**
-     * @Override public void onConfigurationChanged(Configuration newConfig) {
-     * super.onConfigurationChanged(newConfig);
-     * if (player != null) {
-     * player.onConfigurationChanged(newConfig);
-     * }
-     * }
-     */
     public EasyVideoView onConfigurationChanged(final Configuration newConfig) {
         isPortrait = newConfig.orientation == Configuration.ORIENTATION_PORTRAIT;
         doOnConfigurationChanged(isPortrait);
+
         return this;
     }
 
-    /**
-     * @Override public void onBackPressed() {
-     * if (player != null && player.onBackPressed()) {
-     * return;
-     * }
-     * super.onBackPressed();
-     * }
-     */
     public boolean onBackPressed() {
         if (!isOnlyFullScreen && getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            mActivity.finish();
             return true;
         }
+
         return false;
     }
 
