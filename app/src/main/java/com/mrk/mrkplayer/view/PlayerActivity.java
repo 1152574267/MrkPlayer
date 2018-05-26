@@ -7,14 +7,11 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.danikula.videocache.HttpProxyCacheServer;
-import com.mrk.mrkplayer.EasyVideoApplication;
 import com.mrk.mrkplayer.R;
 import com.mrk.mrkplayer.easyijkplayer.listener.OnPlayerBackListener;
 import com.mrk.mrkplayer.easyijkplayer.listener.OnShowThumbnailListener;
 import com.mrk.mrkplayer.easyijkplayer.media.EasyVideoView;
 import com.mrk.mrkplayer.easyijkplayer.media.PlayStateParams;
-import com.mrk.mrkplayer.easyijkplayer.utils.MediaUtils;
 
 public class PlayerActivity extends Activity {
     private EasyVideoView player;
@@ -37,12 +34,7 @@ public class PlayerActivity extends Activity {
             url = mVideoPath;
         }
         if (mVideoUriStr != null) {
-            if (MediaUtils.isStreamingMedia(mVideoUriStr)) {
-                url = mVideoUriStr;
-            } else {
-                HttpProxyCacheServer proxy = EasyVideoApplication.getProxy(getApplicationContext());
-                url = proxy.getProxyUrl(mVideoUriStr);
-            }
+            url = mVideoUriStr;
         }
 
         player = new EasyVideoView(this)
