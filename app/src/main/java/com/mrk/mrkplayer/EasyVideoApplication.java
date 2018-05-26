@@ -15,12 +15,12 @@ public class EasyVideoApplication extends Application {
     }
 
     private HttpProxyCacheServer newProxy() {
-//        return new HttpProxyCacheServer.Builder(this)
-//                .maxCacheSize(1024 * 1024 * 1024)       // 1 Gb for cache
-//                .maxCacheFilesCount(20)
-//                .fileNameGenerator(new EasyFileNameGenerator())
-//                .build();
-        return new HttpProxyCacheServer(this);
+        return new HttpProxyCacheServer.Builder(this)
+                .maxCacheSize(1024 * 1024 * 1024)       // 1 Gb for cache
+                .maxCacheFilesCount(5)
+                .fileNameGenerator(new EasyFileNameGenerator())
+                .build();
+//        return new HttpProxyCacheServer(this);
     }
 
 }

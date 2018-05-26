@@ -1051,7 +1051,7 @@ public class EasyVideoView {
      */
     public boolean isLive() {
         if (currentUrl != null
-                && (currentUrl.startsWith("rtmp://")
+                && (currentUrl.startsWith("rtmp://") || currentUrl.startsWith("rtsp://")
                 || (currentUrl.startsWith("http://") && currentUrl.endsWith(".m3u8"))
                 || (currentUrl.startsWith("http://") && currentUrl.endsWith(".flv")))) {
             isLive = true;
