@@ -13,6 +13,7 @@ public class MyDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
     private Drawable mDivider;
     private int mOrientation;
+    private int mDividerHeight = 10;
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
 
@@ -59,7 +60,8 @@ public class MyDecoration extends RecyclerView.ItemDecoration {
             //获得child的布局信息
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin;
-            final int bottom = top + mDivider.getIntrinsicHeight();
+//            final int bottom = top + mDivider.getIntrinsicHeight();
+            final int bottom = top + mDividerHeight;
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
             //Log.d("wnw", left + " " + top + " "+right+"   "+bottom+" "+i);
@@ -77,7 +79,8 @@ public class MyDecoration extends RecyclerView.ItemDecoration {
             //获得child的布局信息
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left = child.getRight() + params.rightMargin;
-            final int right = left + mDivider.getIntrinsicWidth();
+//            final int right = left + mDivider.getIntrinsicWidth();
+            final int right = left + mDividerHeight;
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
@@ -88,10 +91,12 @@ public class MyDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == HORIZONTAL_LIST) {
             //画横线，就是往下偏移一个分割线的高度
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+//            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            outRect.set(0, 0, 0, mDividerHeight);
         } else {
             //画竖线，就是往右偏移一个分割线的宽度
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+//            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+            outRect.set(0, 0, mDividerHeight, 0);
         }
     }
 }
