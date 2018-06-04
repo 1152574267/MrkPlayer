@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+//import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mrk.mrkplayer.R;
-import com.mrk.mrkplayer.adapter.XRecyclerViewAdapter;
+import com.mrk.mrkplayer.adapter.MRecyclerViewAdapter;
+//import com.mrk.mrkplayer.adapter.XRecyclerViewAdapter;
 import com.mrk.mrkplayer.bean.VideoItem;
 import com.mrk.mrkplayer.decoration.MyDecoration;
 import com.mrk.mrkplayer.threadpool.Call;
@@ -26,12 +28,14 @@ import com.mrk.mrkplayer.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnItemClickListener, XRecyclerViewAdapter.OnItemLongClickListener {
+public class VideoFragment extends Fragment implements /*XRecyclerViewAdapter.OnItemClickListener, XRecyclerViewAdapter.OnItemLongClickListener*/
+        MRecyclerViewAdapter.OnItemClickListener, MRecyclerViewAdapter.OnItemLongClickListener {
     private static final String TAG = "VideoFragment";
 
     private Context mContext;
     private RecyclerView videoList;
-    private XRecyclerViewAdapter<VideoItem> mAdapter;
+    //    private XRecyclerViewAdapter<VideoItem> mAdapter;
+    private MRecyclerViewAdapter<VideoItem> mAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -47,7 +51,8 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
 
         DbHelper.getInstance().setContext(mContext);
         List<VideoItem> mVideoList = new ArrayList<VideoItem>();
-        mAdapter = new XRecyclerViewAdapter<VideoItem>(mContext, mVideoList);
+//        mAdapter = new XRecyclerViewAdapter<VideoItem>(mContext, mVideoList);
+        mAdapter = new MRecyclerViewAdapter<VideoItem>(mContext, mVideoList);
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnItemLongClickListener(this);
     }
@@ -68,7 +73,10 @@ public class VideoFragment extends Fragment implements XRecyclerViewAdapter.OnIt
         Log.d(TAG, "onViewCreated");
 
         videoList = (RecyclerView) view.findViewById(R.id.tablist);
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 1, GridLayoutManager.VERTICAL, false);
+//        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 1, GridLayoutManager.VERTICAL, false);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,
+                StaggeredGridLayoutManager.VERTICAL);
+        videoList.setHasFixedSize(true);
         videoList.setLayoutManager(layoutManager);
         videoList.addItemDecoration(new MyDecoration(mContext, MyDecoration.HORIZONTAL_LIST));
         videoList.setAdapter(mAdapter);
