@@ -116,4 +116,40 @@ public class DbHelper {
         });
     }
 
+    public static boolean isVideo(String filename) {
+        int i = filename.indexOf('.');
+        if (i != -1) {
+            filename = filename.substring(i);
+            if (filename.equalsIgnoreCase(".mp4")
+                    || filename.equalsIgnoreCase(".3gp")
+                    || filename.equalsIgnoreCase(".wmv")
+                    || filename.equalsIgnoreCase(".ts")
+                    || filename.equalsIgnoreCase(".rmvb")
+                    || filename.equalsIgnoreCase(".mov")
+                    || filename.equalsIgnoreCase(".m4v")
+                    || filename.equalsIgnoreCase(".avi")
+                    || filename.equalsIgnoreCase(".m3u8")
+                    || filename.equalsIgnoreCase(".3gpp")
+                    || filename.equalsIgnoreCase(".3gpp2")
+                    || filename.equalsIgnoreCase(".mkv")
+                    || filename.equalsIgnoreCase(".flv")
+                    || filename.equalsIgnoreCase(".divx")
+                    || filename.equalsIgnoreCase(".f4v")
+                    || filename.equalsIgnoreCase(".rm")
+                    || filename.equalsIgnoreCase(".asf")
+                    || filename.equalsIgnoreCase(".ram")
+                    || filename.equalsIgnoreCase(".mpg")
+                    || filename.equalsIgnoreCase(".v8")
+                    || filename.equalsIgnoreCase(".swf")
+                    || filename.equalsIgnoreCase(".m2v")
+                    || filename.equalsIgnoreCase(".asx")
+                    || filename.equalsIgnoreCase(".ra")
+                    || filename.equalsIgnoreCase(".ndivx")
+                    || filename.equalsIgnoreCase(".xvid")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

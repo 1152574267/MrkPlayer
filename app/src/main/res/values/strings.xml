@@ -7,6 +7,7 @@
     <string name="video_uri_input">http://ivi.bupt.edu.cn/hls/sdhd.m3u8</string>
     <string name="tip_video_uri_empty">视频网址不能为空！</string>
     <string name="video_setting">设置</string>
+    <string name="tip_is_not_video">该文件不是视频文件！</string>
 
     <string name="N_A">N/A</string>
     <string name="close">Close</string>
