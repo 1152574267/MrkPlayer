@@ -1,6 +1,5 @@
 package com.mrk.mrkplayer.view;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,6 +24,10 @@ public class SplashActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         if (Build.VERSION.SDK_INT >= 23) {
             checkExternalStorage();
@@ -71,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
         for (int i = 0; i < grantResults.length; i++) {
             Log.d(TAG, "grantResults[" + i + "]: " + grantResults[i] + ", size: " + grantResults.length);
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                new AlertDialog.Builder(this)
+                new AlertDialog.Builder(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth)
                         .setMessage("请开启应用权限！")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 

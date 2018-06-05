@@ -548,7 +548,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                     messageId = R.string.VideoView_error_text_unknown;
                 }
 
-                new AlertDialog.Builder(getContext())
+                new AlertDialog.Builder(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth)
                         .setMessage(messageId)
                         .setPositiveButton(R.string.VideoView_error_button,
                                 new DialogInterface.OnClickListener() {
