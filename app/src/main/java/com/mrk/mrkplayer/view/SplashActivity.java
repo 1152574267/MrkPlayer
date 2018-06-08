@@ -46,9 +46,12 @@ public class SplashActivity extends AppCompatActivity {
 
             if (checkSelfPermission != PackageManager.PERMISSION_GRANTED) {
                 requestExternalStoragePermissions();
-                break;
+                return;
             }
         }
+
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private void requestExternalStoragePermissions() {
