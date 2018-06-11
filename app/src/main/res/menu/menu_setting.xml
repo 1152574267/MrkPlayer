@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_setting"
-        android:icon="@drawable/battery_10"
+        android:icon="@drawable/img_video_record"
         android:title="@string/video_setting"
         app:showAsAction="ifRoom" />
 
