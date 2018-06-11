@@ -32,10 +32,9 @@
             android:padding="10dip"
             android:src="@drawable/record_cancel_normal" />
 
-
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="49dip"
+            android:layout_height="49dp"
             android:layout_alignParentRight="true"
             android:gravity="right|center_vertical"
             android:orientation="horizontal">
@@ -73,13 +72,14 @@
         android:id="@+id/record_progress"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:layout_below="@+id/title_layout" />
+        android:layout_below="@id/title_layout" />
+
     <!-- camera_bottom_bg -->
     <RelativeLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/record_progress"
+        android:layout_below="@id/record_progress"
         android:layout_marginTop="300dip"
         android:background="@color/color_381902">
 
@@ -104,6 +104,5 @@
             android:textColor="@color/camera_progress_three"
             android:textSize="16sp" />
     </RelativeLayout>
-
 
 </RelativeLayout>
