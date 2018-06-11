@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import com.mrk.mrkplayer.adapter.XFragmentPagerAdapter;
 import com.mrk.mrkplayer.model.FragmentGenerator;
 import com.mrk.mrkplayer.view.DictionaryFragment;
-import com.mrk.mrkplayer.view.SettingsActivity;
+import com.mrk.mrkplayer.view.VideoRecordActivity;
 
 public class MainActivity extends AppCompatActivity implements
         TabLayout.OnTabSelectedListener {
@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private void initView() {
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+//        if (actionBar != null) {
+//            actionBar.hide();
+//        }
 
         mTabLayout = (TabLayout) findViewById(R.id.bottom_tab_list);
         mViewPager = (ViewPager) findViewById(R.id.tab_viewpager);
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.action_setting) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, VideoRecordActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
 

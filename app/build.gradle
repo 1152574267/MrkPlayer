@@ -58,4 +58,5 @@ dependencies {
     compile 'com.danikula:videocache:2.7.0'
 
     compile(name: 'ijkplayer-java-release', ext: 'aar')
+    compile project(':mrkrecorder')
 }

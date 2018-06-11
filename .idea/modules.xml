@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MrkPlayer.iml" filepath="$PROJECT_DIR$/MrkPlayer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mrkrecorder/mrkrecorder.iml" filepath="$PROJECT_DIR$/mrkrecorder/mrkrecorder.iml" />
     </modules>
   </component>
 </project>
