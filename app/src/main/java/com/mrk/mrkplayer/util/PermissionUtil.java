@@ -4,7 +4,6 @@ import android.Manifest;
 
 public class PermissionUtil {
     public static final String[] REQUEST_PERMISSIONS = {
-            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET,
