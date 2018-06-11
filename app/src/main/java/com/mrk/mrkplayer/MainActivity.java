@@ -1,6 +1,5 @@
 package com.mrk.mrkplayer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,8 +13,6 @@ import android.view.MenuItem;
 import com.mrk.mrkplayer.adapter.XFragmentPagerAdapter;
 import com.mrk.mrkplayer.model.FragmentGenerator;
 import com.mrk.mrkplayer.view.DictionaryFragment;
-import com.mrk.mrkplayer.view.SendSmallVideoActivity;
-import com.mrk.mrkplayer.view.VideoRecordActivity;
 import com.mrk.mrkrecorder.MediaRecorderActivity;
 import com.mrk.mrkrecorder.model.MediaRecorderConfig;
 
@@ -131,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements
                     .videoBitrate(580000)
                     .captureThumbnailsTime(1)
                     .build();
-            MediaRecorderActivity.goSmallVideoRecorder(this, SendSmallVideoActivity.class.getName(), config);
+            MediaRecorderActivity.goSmallVideoRecorder(this, config);
 
             return true;
         }
