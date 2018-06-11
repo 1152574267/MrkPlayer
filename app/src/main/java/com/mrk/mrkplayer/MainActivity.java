@@ -14,7 +14,10 @@ import android.view.MenuItem;
 import com.mrk.mrkplayer.adapter.XFragmentPagerAdapter;
 import com.mrk.mrkplayer.model.FragmentGenerator;
 import com.mrk.mrkplayer.view.DictionaryFragment;
+import com.mrk.mrkplayer.view.SendSmallVideoActivity;
 import com.mrk.mrkplayer.view.VideoRecordActivity;
+import com.mrk.mrkrecorder.MediaRecorderActivity;
+import com.mrk.mrkrecorder.model.MediaRecorderConfig;
 
 public class MainActivity extends AppCompatActivity implements
         TabLayout.OnTabSelectedListener {
@@ -118,9 +121,17 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.action_setting) {
-            Intent intent = new Intent(this, VideoRecordActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
+                    .fullScreen(true)
+                    .smallVideoWidth(0)
+                    .smallVideoHeight(480)
+                    .recordTimeMax(15000)
+                    .recordTimeMin(1500)
+                    .maxFrameRate(20)
+                    .videoBitrate(580000)
+                    .captureThumbnailsTime(1)
+                    .build();
+            MediaRecorderActivity.goSmallVideoRecorder(this, SendSmallVideoActivity.class.getName(), config);
 
             return true;
         }

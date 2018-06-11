@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
@@ -103,6 +104,10 @@ public class MediaRecorderActivity extends Activity implements
         context.startActivity(new Intent(context, MediaRecorderActivity.class).putExtra(OVER_ACTIVITY_NAME, overGOActivityName).putExtra(MEDIA_RECORDER_CONFIG_KEY, mediaRecorderConfig));
     }
 
+    public static void goSmallVideoRecorder(Activity context, MediaRecorderConfig mediaRecorderConfig) {
+        context.startActivity(new Intent(context, MediaRecorderActivity.class).putExtra(MEDIA_RECORDER_CONFIG_KEY, mediaRecorderConfig));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +116,7 @@ public class MediaRecorderActivity extends Activity implements
 
         initData();
         loadViews();
+        initSmallVideo();
     }
 
     private void initData() {
@@ -169,6 +175,23 @@ public class MediaRecorderActivity extends Activity implements
 
         mProgressView.setMaxDuration(RECORD_TIME_MAX);
         mProgressView.setMinTime(RECORD_TIME_MIN);
+    }
+
+    public void initSmallVideo() {
+        // 设置拍摄视频缓存路径
+        File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        if (DeviceUtils.isZte()) {
+            if (dcim.exists()) {
+                JianXiCamera.setVideoCachePath(dcim + "/mrkrecorder/");
+            } else {
+                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/", "/sdcard-ext/") + "/mrkrecorder/");
+            }
+        } else {
+            JianXiCamera.setVideoCachePath(dcim + "/mrkrecorder/");
+        }
+
+        // 初始化拍摄
+        JianXiCamera.initialize(false, null);
     }
 
     /**
@@ -505,17 +528,17 @@ public class MediaRecorderActivity extends Activity implements
     @Override
     public void onEncodeComplete() {
         hideProgress();
-        Intent intent = null;
-        try {
-            intent = new Intent(this, Class.forName(getIntent().getStringExtra(OVER_ACTIVITY_NAME)));
-            intent.putExtra(MediaRecorderActivity.OUTPUT_DIRECTORY, mMediaObject.getOutputDirectory());
-            intent.putExtra(MediaRecorderActivity.VIDEO_URI, mMediaObject.getOutputTempTranscodingVideoPath());
-            intent.putExtra(MediaRecorderActivity.VIDEO_SCREENSHOT, mMediaObject.getOutputVideoThumbPath());
-            intent.putExtra("go_home", GO_HOME);
-            startActivity(intent);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("需要传入录制完成后跳转的Activity的全类名");
-        }
+//        Intent intent = null;
+//        try {
+//            intent = new Intent(this, Class.forName(getIntent().getStringExtra(OVER_ACTIVITY_NAME)));
+//            intent.putExtra(MediaRecorderActivity.OUTPUT_DIRECTORY, mMediaObject.getOutputDirectory());
+//            intent.putExtra(MediaRecorderActivity.VIDEO_URI, mMediaObject.getOutputTempTranscodingVideoPath());
+//            intent.putExtra(MediaRecorderActivity.VIDEO_SCREENSHOT, mMediaObject.getOutputVideoThumbPath());
+//            intent.putExtra("go_home", GO_HOME);
+//            startActivity(intent);
+//        } catch (ClassNotFoundException e) {
+//            throw new IllegalArgumentException("需要传入录制完成后跳转的Activity的全类名");
+//        }
 
         finish();
     }
