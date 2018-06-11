@@ -1,7 +1,6 @@
 package com.mrk.mrkrecorder;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -655,11 +655,9 @@ public class MediaRecorderActivity extends Activity implements
 
         if (mMediaObject != null && mMediaObject.getDuration() > 1) {
             // 未转码
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.hint)
+            new AlertDialog.Builder(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth)
                     .setMessage(R.string.record_camera_exit_dialog_message)
-                    .setNegativeButton(
-                            R.string.record_camera_cancel_dialog_yes,
+                    .setNegativeButton(R.string.record_camera_cancel_dialog_yes,
                             new DialogInterface.OnClickListener() {
 
                                 @Override
@@ -670,7 +668,9 @@ public class MediaRecorderActivity extends Activity implements
                                 }
                             })
                     .setPositiveButton(R.string.record_camera_cancel_dialog_no,
-                            null).setCancelable(false).show();
+                            null)
+                    .setCancelable(false)
+                    .show();
             return;
         }
 
