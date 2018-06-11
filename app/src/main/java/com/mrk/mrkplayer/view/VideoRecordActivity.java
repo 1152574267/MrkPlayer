@@ -175,24 +175,22 @@ public class VideoRecordActivity extends AppCompatActivity {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // AutoVBRMode
                 if (checkedId == R.id.rb_auto) {
                     ll_only_compress_crf.setVisibility(View.VISIBLE);
                     ll_only_compress_bitrate.setVisibility(View.GONE);
-
-                    // VBRMode
+                // VBRMode
                 } else if (checkedId == R.id.rb_vbr) {
                     ll_only_compress_crf.setVisibility(View.GONE);
                     ll_only_compress_bitrate.setVisibility(View.VISIBLE);
                     tv_only_compress_maxbitrate.setVisibility(View.VISIBLE);
                     et_only_compress_maxbitrate.setVisibility(View.VISIBLE);
-
-                    // CBRMode
+                // CBRMode
                 } else if (checkedId == R.id.rb_cbr) {
                     ll_only_compress_crf.setVisibility(View.GONE);
                     ll_only_compress_bitrate.setVisibility(View.VISIBLE);
                     tv_only_compress_maxbitrate.setVisibility(View.GONE);
                     et_only_compress_maxbitrate.setVisibility(View.GONE);
-
                 }
             }
         });
@@ -202,15 +200,14 @@ public class VideoRecordActivity extends AppCompatActivity {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // 录制视频
                 if (checkedId == R.id.rb_recorder) {
                     sv.setVisibility(View.VISIBLE);
                     ll_only_compress.setVisibility(View.GONE);
-
-                    // 本地选择压缩选择
+                // 本地选择压缩选择
                 } else if (checkedId == R.id.rb_local) {
                     sv.setVisibility(View.GONE);
                     ll_only_compress.setVisibility(View.VISIBLE);
-
                 }
             }
         });
