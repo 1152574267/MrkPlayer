@@ -29,7 +29,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".view.VideoActivity" />
         <activity android:name=".view.PlayerActivity" />
-        <activity android:name=".view.SendSmallVideoActivity" />
 
         <service android:name=".easyijkplayer.services.MediaPlayerService" />
     </application>
