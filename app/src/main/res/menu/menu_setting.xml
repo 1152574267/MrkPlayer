@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_setting"
+        android:id="@+id/action_short_video_record"
         android:icon="@drawable/img_video_record"
-        android:title="@string/video_setting"
+        android:title="@string/short_video_record"
         app:showAsAction="ifRoom" />
 
 </menu>

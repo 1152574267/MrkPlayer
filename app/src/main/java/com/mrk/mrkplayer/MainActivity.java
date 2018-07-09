@@ -117,11 +117,11 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_setting) {
+        if (id == R.id.action_short_video_record) {
             MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
                     .fullScreen(true)
                     .smallVideoWidth(0)
-                    .smallVideoHeight(1080)
+                    .smallVideoHeight(960)
                     .recordTimeMax(15000)
                     .recordTimeMin(1500)
                     .maxFrameRate(20)
