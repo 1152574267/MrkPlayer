@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements
             MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
                     .fullScreen(true)
                     .smallVideoWidth(0)
-                    .smallVideoHeight(480)
+                    .smallVideoHeight(1080)
                     .recordTimeMax(15000)
                     .recordTimeMin(1500)
                     .maxFrameRate(20)

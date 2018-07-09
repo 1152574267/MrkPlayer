@@ -31,7 +31,6 @@
         <activity android:name=".view.SettingsActivity" />
         <activity android:name=".view.PlayerActivity" />
         <activity android:name=".view.SendSmallVideoActivity" />
-        <activity android:name=".view.VideoRecordActivity" />
 
         <service android:name=".easyijkplayer.services.MediaPlayerService" />
     </application>
