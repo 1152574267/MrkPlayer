@@ -14,9 +14,9 @@ JXYUVEncodeH264::JXYUVEncodeH264(UserArguments *arg) : arguments(arg) {
  * @return
  */
 int JXYUVEncodeH264::flush_encoder(AVFormatContext *fmt_ctx, unsigned int stream_index) {
-    int ret;
-    int got_frame;
+    int ret, got_frame;
     AVPacket enc_pkt;
+
     if (!(fmt_ctx->streams[stream_index]->codec->codec->capabilities &
           CODEC_CAP_DELAY)) {
         return 0;
@@ -36,7 +36,7 @@ int JXYUVEncodeH264::flush_encoder(AVFormatContext *fmt_ctx, unsigned int stream
             ret = 0;
             break;
         }
-        LOGI(JNI_DEBUG, "_Flush Encoder: Succeed to encode 1 frame video!\tsize:%5d\n",
+        LOGI(JNI_DEBUG, "_Flush Encoder: Succeed to encode 1 frame video!\t size:%5d\n",
              enc_pkt.size);
         /* mux encoded frame */
         ret = av_write_frame(fmt_ctx, &enc_pkt);
@@ -53,41 +53,28 @@ int JXYUVEncodeH264::flush_encoder(AVFormatContext *fmt_ctx, unsigned int stream
  * @return
  */
 int JXYUVEncodeH264::initVideoEncoder() {
-    LOGI(JNI_DEBUG, "视频编码器初始化开始")
+    LOGI(JNI_DEBUG, "视频编码器初始化开始");
 
     size_t path_length = strlen(arguments->video_path);
     char *out_file = (char *) malloc(path_length + 1);
     strcpy(out_file, arguments->video_path);
 
     av_register_all();
-    //Method1.
-//    pFormatCtx = avformat_alloc_context();
-//    //Guess Format
-//    fmt = av_guess_format(NULL, out_file, NULL);
-//
-//    LOGE(JNI_DEBUG,",fmt==null?:%s", fmt == NULL ? "null" : "no_null");
-//    pFormatCtx->oformat = fmt;
-    // Method 2.
+
     avformat_alloc_output_context2(&pFormatCtx, NULL, NULL, out_file);
+    if (NULL == pFormatCtx) {
+        LOGE(JNI_DEBUG, "_Failed to alloc output context!\n");
+        return -1;
+    }
     fmt = pFormatCtx->oformat;
 
-    // Open output URL
-    if (avio_open(&pFormatCtx->pb, out_file, AVIO_FLAG_READ_WRITE) < 0) {
-        LOGE(JNI_DEBUG, "_Failed to open output file! \n");
-        return -1;
-    }
-
     video_st = avformat_new_stream(pFormatCtx, 0);
-    //video_st->time_base.num = 1;
-    //video_st->time_base.den = 25;
-    if (video_st == NULL) {
-        LOGE(JNI_DEBUG, "_video_st==null");
+    if (NULL == video_st) {
+        LOGE(JNI_DEBUG, "Could not allocate video stream!\n");
         return -1;
     }
 
-    // Param that must set
     pCodecCtx = video_st->codec;
-    //pCodecCtx->codec_id =AV_CODEC_ID_HEVC;
     pCodecCtx->codec_id = AV_CODEC_ID_H264;
     pCodecCtx->codec_type = AVMEDIA_TYPE_VIDEO;
     pCodecCtx->pix_fmt = AV_PIX_FMT_YUV420P;
@@ -99,57 +86,52 @@ int JXYUVEncodeH264::initVideoEncoder() {
         pCodecCtx->width = arguments->out_height;
         pCodecCtx->height = arguments->out_width;
     }
-
     pCodecCtx->bit_rate = arguments->video_bit_rate;
     pCodecCtx->gop_size = 50;
     pCodecCtx->thread_count = 12;
-
     pCodecCtx->time_base.num = 1;
     pCodecCtx->time_base.den = arguments->frame_rate;
-//    pCodecCtx->me_pre_cmp = 1;
-    // H264
-    //pCodecCtx->me_range = 16;
-    //pCodecCtx->max_qdiff = 4;
-    //pCodecCtx->qcompress = 0.6;
     pCodecCtx->qmin = 10;
     pCodecCtx->qmax = 51;
-
-    //Optional Param
     pCodecCtx->max_b_frames = 3;
 
-    // Set Option
     AVDictionary *param = NULL;
-    // H.264
     if (pCodecCtx->codec_id == AV_CODEC_ID_H264) {
-//        av_dict_set(&param, "tune", "animation", 0);
-//        av_dict_set(&param, "profile", "baseline", 0);
         av_dict_set(&param, "tune", "zerolatency", 0);
         av_opt_set(pCodecCtx->priv_data, "preset", "ultrafast", 0);
         av_dict_set(&param, "profile", "baseline", 0);
     }
 
-    // Show some Information
     av_dump_format(pFormatCtx, 0, out_file, 1);
 
     pCodec = avcodec_find_encoder(pCodecCtx->codec_id);
     if (!pCodec) {
-        LOGE(JNI_DEBUG, "Can not find encoder! \n");
+        LOGE(JNI_DEBUG, "Could not find video encoder!\n");
         return -1;
     }
+
     if (avcodec_open2(pCodecCtx, pCodec, &param) < 0) {
-        LOGE(JNI_DEBUG, "Failed to open encoder! \n");
+        LOGE(JNI_DEBUG, "Failed to open video encoder!\n");
         return -1;
     }
 
     pFrame = av_frame_alloc();
     picture_size = avpicture_get_size(pCodecCtx->pix_fmt, pCodecCtx->width, pCodecCtx->height);
-    LOGI(JNI_DEBUG, "   picture_size:%d", picture_size);
     uint8_t *buf = (uint8_t *) av_malloc(picture_size);
     avpicture_fill((AVPicture *) pFrame, buf, pCodecCtx->pix_fmt, pCodecCtx->width,
                    pCodecCtx->height);
 
+    // Open output URL
+    if (avio_open(&pFormatCtx->pb, out_file, AVIO_FLAG_READ_WRITE) < 0) {
+        LOGE(JNI_DEBUG, "_Failed to open output file!\n");
+        return -1;
+    }
+
     // Write File Header
-    avformat_write_header(pFormatCtx, NULL);
+    if (avformat_write_header(pFormatCtx, NULL) < 0) {
+        LOGI(JNI_DEBUG, "Error occurred when opening output file!\n");
+    }
+
     av_new_packet(&pkt, picture_size);
     out_y_size = pCodecCtx->width * pCodecCtx->height;
     is_end = START_STATE;
@@ -184,12 +166,12 @@ int JXYUVEncodeH264::startSendOneFrame(uint8_t *buf) {
  */
 void *JXYUVEncodeH264::startEncode(void *obj) {
     JXYUVEncodeH264 *h264_encoder = (JXYUVEncodeH264 *) obj;
+    int ret;
+
     while (!h264_encoder->is_end || !h264_encoder->frame_queue.empty()) {
         if (h264_encoder->is_release) {
-            //Write file trailer
             av_write_trailer(h264_encoder->pFormatCtx);
 
-            //Clean
             if (h264_encoder->video_st) {
                 avcodec_close(h264_encoder->video_st->codec);
                 av_free(h264_encoder->pFrame);
@@ -197,6 +179,7 @@ void *JXYUVEncodeH264::startEncode(void *obj) {
             avio_close(h264_encoder->pFormatCtx->pb);
             avformat_free_context(h264_encoder->pFormatCtx);
             delete h264_encoder;
+
             return 0;
         }
 
@@ -205,36 +188,34 @@ void *JXYUVEncodeH264::startEncode(void *obj) {
         }
 
         uint8_t *picture_buf = *h264_encoder->frame_queue.wait_and_pop().get();
-        LOGI(JNI_DEBUG, "send_videoframe_count:%d", h264_encoder->frame_count);
+        LOGI(JNI_DEBUG, "send videoframe count:%d\n", h264_encoder->frame_count);
         int in_y_size = h264_encoder->arguments->in_width * h264_encoder->arguments->in_height;
 
         h264_encoder->custom_filter(h264_encoder, picture_buf, in_y_size,
                                     h264_encoder->arguments->v_custom_format);
 
-//        h264_encoder->pFrame->data[0] = picture_buf;
-//        h264_encoder->pFrame->data[2] = picture_buf + h264_encoder->out_y_size;
-//        h264_encoder->pFrame->data[1] = picture_buf + h264_encoder->out_y_size * 5 / 4;
-//    memcpy(h264_encoder->pFrame->data[0],picture_buf,h264_encoder->out_y_size);
-//    memcpy(h264_encoder->pFrame->data[2],picture_buf+h264_encoder->out_y_size,h264_encoder->out_y_size/4);
-//    memcpy(h264_encoder->pFrame->data[1],picture_buf+h264_encoder->out_y_size*5/4,h264_encoder->out_y_size/4);
         // PTS
         h264_encoder->pFrame->pts = h264_encoder->frame_count;
         h264_encoder->frame_count++;
+
         int got_picture = 0;
-        // Encode
-        int ret = avcodec_encode_video2(h264_encoder->pCodecCtx, &h264_encoder->pkt,
+        ret = avcodec_encode_video2(h264_encoder->pCodecCtx, &h264_encoder->pkt,
                                         h264_encoder->pFrame, &got_picture);
         if (ret < 0) {
-            LOGE(JNI_DEBUG, "Failed to encode! \n");
+            LOGE(JNI_DEBUG, "Failed to encode video frame!\n");
         }
         if (got_picture == 1) {
-            LOGI(JNI_DEBUG, "Succeed to encode frame: %5d\tsize:%5d\n", h264_encoder->framecnt,
+            LOGI(JNI_DEBUG, "Succeed to encode video frame index: %5d\t size:%5d\n", h264_encoder->framecnt,
                  h264_encoder->pkt.size);
             h264_encoder->framecnt++;
             h264_encoder->pkt.stream_index = h264_encoder->video_st->index;
             ret = av_write_frame(h264_encoder->pFormatCtx, &h264_encoder->pkt);
+            if (ret < 0) {
+                LOGE(JNI_DEBUG, "Failed to write video frame!\n");
+            }
             av_free_packet(&h264_encoder->pkt);
         }
+
         delete (picture_buf);
     }
 
@@ -366,18 +347,15 @@ int JXYUVEncodeH264::encodeEnd() {
     // Flush Encoder
     int ret_1 = flush_encoder(pFormatCtx, 0);
     if (ret_1 < 0) {
-        LOGE(JNI_DEBUG, "Flushing encoder failed\n");
+        LOGE(JNI_DEBUG, "Flushing encoder failed!\n");
         return -1;
     }
 
-    // Write file trailer
     av_write_trailer(pFormatCtx);
 
-    // Clean
     if (video_st) {
         avcodec_close(video_st->codec);
         av_free(pFrame);
-//        av_free(picture_buf);
     }
     avio_close(pFormatCtx->pb);
     avformat_free_context(pFormatCtx);
