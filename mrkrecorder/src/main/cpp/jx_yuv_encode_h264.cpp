@@ -244,11 +244,8 @@ JXYUVEncodeH264::custom_filter(const JXYUVEncodeH264 *h264_encoder, const uint8_
     int uv_height_start_index = y_height_start_index / 2;
 
     if (format == ROTATE_90_CROP_LT) {
-
         for (int i = y_height_start_index; i < h264_encoder->arguments->in_height; i++) {
-
             for (int j = 0; j < h264_encoder->arguments->out_width; j++) {
-
                 int index = h264_encoder->arguments->in_width * i + j;
                 uint8_t value = *(picture_buf + index);
                 *(h264_encoder->pFrame->data[0] + j * h264_encoder->arguments->out_height +
@@ -272,28 +269,20 @@ JXYUVEncodeH264::custom_filter(const JXYUVEncodeH264 *h264_encoder, const uint8_
             }
         }
     } else if (format == ROTATE_0_CROP_LT) {
-
-
         for (int i = y_height_start_index; i < h264_encoder->arguments->in_height; i++) {
-
             for (int j = 0; j < h264_encoder->arguments->out_width; j++) {
-
                 int index = h264_encoder->arguments->in_width * i + j;
                 uint8_t value = *(picture_buf + index);
-
                 *(h264_encoder->pFrame->data[0] +
                   (i - y_height_start_index) * h264_encoder->arguments->out_width +
                   j) = value;
             }
         }
 
-
         for (int i = uv_height_start_index; i < h264_encoder->arguments->in_height / 2; i++) {
             for (int j = 0; j < h264_encoder->arguments->out_width / 2; j++) {
-
                 int index = h264_encoder->arguments->in_width / 2 * i + j;
                 uint8_t v = *(picture_buf + in_y_size + index);
-
                 uint8_t u = *(picture_buf + in_y_size * 5 / 4 + index);
                 *(h264_encoder->pFrame->data[2] +
                   ((i - uv_height_start_index) * h264_encoder->arguments->out_width / 2 + j)) = v;
@@ -302,15 +291,11 @@ JXYUVEncodeH264::custom_filter(const JXYUVEncodeH264 *h264_encoder, const uint8_
             }
         }
     } else if (format == ROTATE_270_CROP_LT_MIRROR_LR) {
-
         int y_width_start_index =
                 h264_encoder->arguments->in_width - h264_encoder->arguments->out_width;
         int uv_width_start_index = y_width_start_index / 2;
-
         for (int i = 0; i < h264_encoder->arguments->out_height; i++) {
-
             for (int j = y_width_start_index; j < h264_encoder->arguments->in_width; j++) {
-
                 int index = h264_encoder->arguments->in_width *
                             (h264_encoder->arguments->out_height - i - 1) + j;
                 uint8_t value = *(picture_buf + index);
@@ -320,6 +305,7 @@ JXYUVEncodeH264::custom_filter(const JXYUVEncodeH264 *h264_encoder, const uint8_
                   i) = value;
             }
         }
+
         for (int i = 0; i < h264_encoder->arguments->out_height / 2; i++) {
             for (int j = uv_width_start_index; j < h264_encoder->arguments->in_width / 2; j++) {
                 int index = h264_encoder->arguments->in_width / 2 *
